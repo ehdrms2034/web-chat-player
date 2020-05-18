@@ -1,0 +1,38 @@
+{
+  "name": "video-metadata-api-server",
+  "version": "0.0.1",
+  "description": "PlayGround의 비디오 metadata API",
+  "main": "index.js",
+  "license": "AGPL-3.0-or-later",
+  "author": {
+    "name": "Roeniss Moon",
+    "email": "roeniss2@gmail.com"
+  },
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/www.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2020-NAVER-CAMPUS-HACKDAY/web-player-chat"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.1",
+    "@typescript-eslint/eslint-plugin": "^3.0.0-alpha.27",
+    "@typescript-eslint/parser": "^2.33.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.6",
+    "@types/morgan": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.25.3",
+    "morgan": "^1.10.0"
+  }
+}
