@@ -82,7 +82,7 @@ class Player extends Component {
             <div>
                  <ReactPlayer
                  ref={this.ref}
-                 url={"http://49.50.162.195:8080/videos/whatsuda.m3u"} playing
+                 url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"} playing
                  onReady={this.onPlayerReady}
                  />
 
