@@ -19,13 +19,15 @@ const comment =new Schema({
         required : true
     },
     timeline : {
-        type : String,
+        type : Number,
         required : true,
     },
     createdAt : {
         type : Date,
         default : Date.now
     }
+},{
+    versionKey: false
 });
 
 module.exports = mongoose.model('comment',comment);

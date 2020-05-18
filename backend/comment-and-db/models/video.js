@@ -15,10 +15,16 @@ const video =new Schema({
     summary : {
         type : String,
     },
-    url : {
+    posterUrl : {
+        type : String,
+        required : true
+    },
+    videoUrl : {
         type : String,
         required : true
     }
+},{
+    versionKey: false
 });
 
 module.exports = mongoose.model('video',video);
