@@ -3,9 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const dotenv = require('dotenv').config({path : ".config"});
+const dotenv = require('dotenv').config({path : path.join(__dirname,"/config/.env")});
+
 
 var indexRouter = require('./controller/index');
+
 
 var app = express();
 
