@@ -1,6 +1,11 @@
 import express from "express";
 
-const errorHandler = (err: Error, _req: express.Request, res: express.Response): express.Response => {
+const errorHandler = (
+  err: Error,
+  _req: express.Request,
+  res: express.Response,
+  _next: express.NextFunction
+): express.Response => {
   const errorMsg = interpretError(err);
   console.error(`Server Error: ${errorMsg}`);
   return res.status(500).send(errorMsg);

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { errorHandler, logger } from "./middlewares";
 import routers from "./routes";
+import { initMongoose } from "./database";
 
 const app = express();
 
@@ -11,6 +12,11 @@ const app = express();
 app.use(logger());
 app.use(cors());
 app.use(express.json());
+
+// --------------------
+//  Initialize DB
+// --------------------
+initMongoose();
 
 // --------------------
 //  Routings

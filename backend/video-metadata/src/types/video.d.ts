@@ -1,10 +1,8 @@
-export interface Video {
-  name?: string;
-  views?: number;
-  publishedAt?: Date;
-  summary: string;
-}
+import { Document } from "mongoose";
 
-export interface VideoWrapper {
-  data: Video[];
+export interface Video extends Document {
+  name: string;
+  uploadedAt: Date;
+  summary: string;
+  url: string;
 }
