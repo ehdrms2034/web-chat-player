@@ -7,10 +7,6 @@ const video =new Schema({
         type : String,
         required : true
     },
-    views : {
-        type : Number,
-        default : 0
-    },
     uploadedAt : {
         type : Date,
         required : true,
