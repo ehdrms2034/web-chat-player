@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "test:db": "jasmine-node ./test/db.spec.js",
     "test:socket": "jasmine-node ./test/socket.spec.js",
-    "start:dev" : "nodemon"
+    "start:dev": "nodemon"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
