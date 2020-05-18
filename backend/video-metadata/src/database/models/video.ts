@@ -1,5 +1,11 @@
-import { model, Schema } from "mongoose";
-import { Video } from "../../types/video";
+import { model, Schema, Document } from "mongoose";
+
+export interface Video extends Document {
+  name: string;
+  uploadedAt: Date;
+  summary: string;
+  url: string;
+}
 
 const video = new Schema<Video>({
   name: {
@@ -14,10 +20,15 @@ const video = new Schema<Video>({
   summary: {
     type: String,
   },
-  url: {
+  videoUrl: {
+    type: String,
+    required: true,
+  },
+  posterUrl: {
     type: String,
     required: true,
   },
 });
 
-export default model<Video>("video", video);
+const VideoCollection = model<Video>("video", video);
+export { VideoCollection };
