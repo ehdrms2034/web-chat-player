@@ -1,4 +1,5 @@
-import "../.env";
+import { config } from "dotenv";
+config(); // init dotenv
 import app from "./App";
 import moment from "moment";
 
@@ -6,9 +7,8 @@ import moment from "moment";
 //  check env variables
 // -----------------------------
 const _checkEnvVars = () => {
-  const {} = process.env;
-
-  [].forEach((envVal) => {
+  const { DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD } = process.env;
+  [DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD].forEach((envVal) => {
     if (!envVal) {
       console.error(`${envVal} should be specified`);
       process.exit(1);
@@ -21,7 +21,7 @@ _checkEnvVars();
 // -----------------------------
 //  init server
 // -----------------------------
-const port = Number(process.env.PORT) || 9000;
+const port = Number(process.env.PORT) || 3000;
 
 app
   .listen(port, () => {
