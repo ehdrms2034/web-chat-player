@@ -1,4 +1,5 @@
 const Comment = require("../../models/comment");
+const Video = require("../../models/video");
 const moment = require("moment");
 
 class CommentService {
@@ -18,7 +19,6 @@ class CommentService {
   async getCommentsByVideo(videoId, timeline, duration) {
     let basedDate = moment("2000");
     let replacedTime = timeline.replaceAll(":", "");
-
     while (replacedTime.length < 8) {
       replacedTime = "0" + replacedTime;
     }

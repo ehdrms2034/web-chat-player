@@ -84,8 +84,10 @@ describe("db", () => {
     // await commentService.createComment(userData[0]._id,videoData[0]._id,"헬로우","21:21");
     // const data = await commentService.getAllComment();
     // console.log(data);
-
-    data = await commentService.getCommentsByVideo(videoData[0],"00:00",1000);
+    // userService.createUser("cookie","helloworld");
+    const data = await userService.getNickname("abcd");
     console.log(data);
+    // data = await commentService.getCommentsByVideo(videoData[0],"00:00",1000);
+    // console.log(data);
 });
 });

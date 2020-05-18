@@ -8,7 +8,8 @@ const userService = new UserService();
 router.post("/createUser", async (req, res) => {
   const { cookie, nickname } = req.body;
   try {
-    await userService.createUser({ cookie, nickname });
+    console.log(cookie,nickname);
+    await userService.createUser(cookie,nickname);
     return res.send(
       new APIResponse("success", "유저 생성에 성공했습니다.", nickname)
     );
