@@ -1,0 +1,37 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Header {
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    width: 100vw;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logoImg {
+    width: 100px;
+    padding: 20px;
+    padding-top: 30px;
+}
+
+.userInfo {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.userImg {
+    width: 30px;
+    padding: 10px;
+}
+
+.nickName {
+    color: white;
+}

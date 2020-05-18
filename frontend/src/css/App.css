@@ -1,0 +1,13 @@
+.filter {
+    background-image: url("../imgs/background.jpg");
+    background-color: rgba(0, 0, 0, 1);
+    opacity: 0.3;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
