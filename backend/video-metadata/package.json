@@ -9,7 +9,8 @@
     "email": "roeniss2@gmail.com"
   },
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/www.ts"
+    "start": "cross-env NODE_ENV=local nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/www.ts",
+    "start:dev": "pm2 delete --silent API & cross-env NODE_ENV=production pm2 start ./node_modules/.bin/ts-node --name API -e ./log/pm2.error.log -o ./log/pm2.out.log --log-date-format 'YYYY-MM-DD HH:mm Z' -- src/www.ts"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   "dependencies": {
     "@types/mongoose": "^5.7.20",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "moment": "^2.25.3",
