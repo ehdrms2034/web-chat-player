@@ -1,10 +1,11 @@
 import express from "express";
+import { getVideoList } from "../controllers/video";
 
 const router = express.Router();
 
-router.get("*", (_q, r) => {
-  console.log("test");
-  return r.sendStatus(200);
+router.get("/videos", async (_req, res) => {
+  const data = getVideoList();
+  return res.json(data);
 });
 
 export default router;
