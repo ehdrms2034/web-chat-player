@@ -3,9 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const dotenv = require('dotenv').config({path : ".config"});
+const dotenv = require('dotenv').config({path : path.join(__dirname,"/config/.env")});
+
 
 var indexRouter = require('./controller/index');
+
 
 var app = express();
 
@@ -20,6 +22,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
+console.log(process.env.DB_HOST);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
