@@ -22,7 +22,6 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
-console.log(process.env.DB_HOST);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
