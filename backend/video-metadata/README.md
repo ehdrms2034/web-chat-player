@@ -16,7 +16,7 @@
 
 ```js
 // 정상 예시
-axios.get("http://localhost:3000/videos").then((res) => {
+axios.get("http://27.96.135.160:3000/videos").then((res) => {
   console.log(JSON.stringify(res.data, null, 2));
 });
 /* 출력 결과 :
@@ -82,7 +82,7 @@ axios.get("http://localhost:3000/videos").then((res) => {
 
 ```js
 // 정상 예시
-axios.get("http://localhost:3000/video/5ec284490d48beb75916bebb").then((res) => {
+axios.get("http://27.96.135.160:3000/video/5ec284490d48beb75916bebb").then((res) => {
   console.log(JSON.stringify(res.data, null, 2));
 });
 /* 출력 결과 :
@@ -98,7 +98,7 @@ axios.get("http://localhost:3000/video/5ec284490d48beb75916bebb").then((res) => 
 
 // 에러 예시 (비정상 id값)
 axios
-  .get("http://localhost:3000/video/1")
+  .get("http://27.96.135.160:3000/video/1")
   .then((res) => {
     console.log(JSON.stringify(res.data, null, 2));
   })
@@ -106,7 +106,7 @@ axios
     console.error(`ERROR : ${err}`);
   });
 /* 출력 결과 :
-  GET http://localhost:3000/video/1 422 (Unprocessable Entity) # 브라우저가 자동으로 띄워줌
+  GET http://27.96.135.160:3000/video/1 422 (Unprocessable Entity) # 브라우저가 자동으로 띄워줌
   ERROR : Error: Request failed with status code 422 # console.error()의 결과
 */
 ```
