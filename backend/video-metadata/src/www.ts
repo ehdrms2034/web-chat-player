@@ -8,9 +8,9 @@ import moment from "moment";
 // -----------------------------
 const _checkEnvVars = () => {
   const { DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD } = process.env;
-  [DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD].forEach((envVal) => {
-    if (!envVal) {
-      console.error(`${envVal} should be specified`);
+  Object.entries({ DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD }).forEach(([key, value]) => {
+    if (!value) {
+      console.error(`Error on dotenv : '${key}' should be spefied in /.env`);
       process.exit(1);
     }
   });
