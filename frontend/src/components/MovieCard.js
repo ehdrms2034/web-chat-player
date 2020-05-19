@@ -15,9 +15,9 @@ function MovieCard(props) {
           <img src={video.posterUrl} alt="썸네일" />
         </div>
         <div className="MovieInfo">
-          <div className="MovieTitle">{video.name}</div>
-          <div className="MovieSummary">{video.summary}</div>
-          <div className="MovieDate">{date}</div>
+          <div className="MovieTitle"> {video.name} </div>
+          <div className="MovieSummary"> {video.summary} </div>
+          <div className="MovieDate"> {date} </div>
         </div>
       </div>
     </Link>
