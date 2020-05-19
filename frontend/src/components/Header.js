@@ -1,8 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import "../css/header.css";
 import logo from "../imgs/logo.png";
 import userIcon from "../imgs/social.png";
 import { Link } from "react-router-dom";
+import { v4 as uuidv4} from 'uuid';
+
+
+const serverUrl = ""
 
 function Header() {
   const $Header = useRef();
@@ -11,6 +15,11 @@ function Header() {
     let offSet = window.scrollY;
     offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop")
   });
+
+  useEffect(()=>{
+    console.log(uuidv4());
+    
+  },[]);
 
   return (
     <div className="Header" ref={$Header}>
