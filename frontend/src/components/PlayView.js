@@ -31,7 +31,7 @@ function PlayView({ match }) {
           </div>
         </div>
       </section>
-      <ChatContainer />
+      <ChatContainer _name={'laikhan'} _timeline={'11:22:33'} />
     </div>
   );
 }
