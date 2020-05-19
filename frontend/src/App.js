@@ -4,12 +4,12 @@ import Header from "./components/Header.js";
 import ListView from "./components/ListView.js";
 import PlayView from "./components/PlayView.js";
 import { Route, Switch } from "react-router-dom";
-import { CookieProvider } from "react-cookie";
+import { CookiesProvider } from "react-cookie";
 
 function App() {
   console.log("App");
   return (
-    <CookieProvider>
+    <CookiesProvider>
       <div className="App">
         <div className="filter"></div>
         <Header />
@@ -18,7 +18,7 @@ function App() {
           <Route path="/videos/:id" component={PlayView} />
         </Switch>
       </div>
-    </CookieProvider>
+    </CookiesProvider>
   );
 }
 
