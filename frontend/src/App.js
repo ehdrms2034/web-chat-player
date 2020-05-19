@@ -3,7 +3,7 @@ import "./css/App.css";
 import Header from "./components/Header.js";
 import ListView from "./components/ListView.js";
 import PlayView from "./components/PlayView.js";
-import ChatExample from "./components/Tmp/TmpSieun.js";
+import ChatExample from "./components/Tmp/ChatContainer";
 import { Route } from "react-router-dom";
 
 function App() {
