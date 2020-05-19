@@ -7,7 +7,6 @@ import { Route, Switch } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
 function App() {
-  console.log("App");
   return (
     <CookiesProvider>
       <div className="App">

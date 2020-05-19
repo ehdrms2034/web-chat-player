@@ -3,11 +3,10 @@ import "../css/listView.css";
 import { Link } from "react-router-dom";
 
 function MovieCard(props) {
-  // 임시 데이터
   const video = props.video;
   const date = video.uploadedAt.slice(0, 10).split("-").join(".");
   const url = `videos/${video._id}`;
-  const slicedSummary = video.summary.length > 60 ? `${video.summary.slice(0,60)}...` : video.summary
+  const slicedSummary = video.summary.length > 60 ? `${video.summary.slice(0, 60)}...` : video.summary;
 
   return (
     <Link to={url}>
