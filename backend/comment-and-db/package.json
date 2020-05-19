@@ -7,7 +7,8 @@
     "test:db": "jasmine-node ./test/db.spec.js",
     "test:db:dev": "nodemon --config nodemon.test.json",
     "test:socket": "jasmine-node ./test/socket.spec.js",
-    "start:dev": "nodemon"
+    "start:dev": "nodemon",
+    "deploy": "pm2 start ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
