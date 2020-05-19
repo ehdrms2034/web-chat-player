@@ -3,4 +3,24 @@
   color: white;
   padding: 0 20px;
   box-sizing: border-box;
+  display: flex;
+  height: 85vh;
+}
+
+.video {
+  border: 1px solid white;
+  width: 60vw;
+  box-sizing: border-box;
+}
+
+.ChatContainer {
+  border: 1px solid white;
+  width: 40vw;
+  box-sizing: border-box;
+}
+
+.Screen {
+  height: 34vw;
+  border: 1px solid white;
+  box-sizing: border-box;
 }
