@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useCookies } from "react-cookie";
 import Axios from "axios";
-import { uniqueNamesGenerator, Config, adjectives, colors, animals } from "unique-names-generator";
+import { uniqueNamesGenerator,  adjectives, colors, animals } from "unique-names-generator";
 
 const serverUrl = "http://27.96.130.172";
 
@@ -27,10 +27,13 @@ function Header() {
   const [cookie, setCookie] = useCookies(["cookie"]);
   const [nickname, setNickname] = useState("닉네임");
 
-  useEffect(async () => {
-    if (cookie.id === undefined) await createUser();
-    else await getNickname();
-  }, []);
+  useEffect(() => {
+    async function init(){
+      if (cookie.id === undefined) await createUser();
+      else await getNickname();
+    }
+    init();
+  });
 
   const createUser = async () => {
     const uuid4 = uuidv4();
@@ -54,6 +57,7 @@ function Header() {
     if (response.data.response === "success") setNickname(response.data.data);
     else await createUser();
   };
+
 
   return (
     <div className="Header" ref={$Header}>
