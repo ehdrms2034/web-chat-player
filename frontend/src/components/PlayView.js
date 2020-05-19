@@ -5,7 +5,7 @@ import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
 
 function PlayView({ match }) {
-  // 파람스에서 아이디 말고 영상 정보를 다 받아왔으면 하는데 방법 찾는 중 --> 찾으시기 전까진 아래 방법으로 가시죠
+  console.log(match.params.id);
   const movieId = match.params.id;
   const [video, setVideos] = React.useState({});
   React.useEffect(() => {
@@ -22,16 +22,15 @@ function PlayView({ match }) {
   return (
     <div className="PlayView">
       <section className="video">
+        {/* 여기에 ReactPlayer 삽입 className="Screen" */}
         <Screen />
         <div className="playInfo">
-          <div className="MovieTitle">{video.name}</div>
-          <div className="MovieSummary">{video.summary}</div>
-          <div className="MovieDate">
-            {new Date(video.uploadedAt).toLocaleDateString()}
-          </div>
+          <div className="PlayTitle">{video.name}</div>
+          <div className="PlaySummary">{video.summary}</div>
+          <div className="PlayDate">{new Date(video.uploadedAt).toLocaleDateString()}</div>
         </div>
       </section>
-      <ChatContainer _name={'laikhan'} _timeline={'11:22:33'} />
+      <ChatContainer _name={"laikhan"} _timeline={"11:22:33"} />
     </div>
   );
 }

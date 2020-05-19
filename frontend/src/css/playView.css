@@ -1,26 +1,150 @@
 .PlayView {
-  /* margin-top: 100px; */
   color: white;
-  padding: 0 20px;
+  padding: 0 1vw;
   box-sizing: border-box;
   display: flex;
   height: 85vh;
 }
 
 .video {
-  border: 1px solid white;
   width: 60vw;
   box-sizing: border-box;
 }
 
-.ChatContainer {
-  border: 1px solid white;
-  width: 40vw;
-  box-sizing: border-box;
-}
-
 .Screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 34vw;
   border: 1px solid white;
   box-sizing: border-box;
+}
+
+.PlayTitle {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333333;
+  padding-bottom: 10px;
+}
+
+.PlaySummary {
+  line-height: 150%;
+  font-size: 1rem;
+  color: #c5c5c5;
+}
+.PlayDate {
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+
+.playInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 채팅부분 */
+.ChatContainer {
+  /* border: 1px solid white; */
+  width: 38vw;
+  position: fixed;
+  right: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  height: calc(100vh - 70px);
+  background-color: rgba(34, 34, 41, 0.267);
+  border-radius: 10px;
+}
+.chatHeader {
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: rgb(29, 29, 31);
+  height: 50px;
+  position: fixed;
+  top: 70px;
+  width: 38vw;
+}
+
+form {
+  position: absolute;
+  bottom: 2px;
+  width: 38vw;
+  height: 50px;
+  display: flex;
+  color: black;
+  box-sizing: border-box;
+}
+
+.commentContainer {
+  position: absolute;
+  width: 38vw;
+  top: 0;
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  box-sizing: border-box;
+  padding-top: 50px;
+}
+
+input {
+  height: 50px;
+  width: calc(38vw - 100px);
+  color: black;
+  box-sizing: border-box;
+  padding: 1px 5px;
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline-style: none;
+}
+
+.sendButton {
+  width: 100px;
+  background-color: rgba(30, 30, 43, 0.507);
+  color: white;
+  border: 0px solid black;
+}
+
+.sendButton:focus {
+  outline-style: none;
+}
+
+.Comment {
+  width: 35vw;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 20px;
+}
+
+.msgBox {
+  height: auto;
+  display: flex;
+  align-items: flex-end;
+}
+.messageText {
+  line-height: 150%;
+  background-color: rgba(30, 30, 43, 0.507);
+  border-radius: 0 20px 20px 20px;
+  padding: 20px 20px;
+  margin: 5px 10px 0 0;
+  display: flex;
+  align-items: center;
+  max-width: 25vw;
+  word-break: break-all;
+  flex-wrap: wrap;
+}
+
+.nickNameTxt {
+  margin-bottom: 5px;
+}
+
+.sentDate {
+  min-width: 40px;
 }
