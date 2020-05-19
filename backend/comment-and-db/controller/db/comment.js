@@ -36,14 +36,14 @@ router.post("/createComment", async (req, res) => {
 });
 
 router.get("/getComments", async (req, res) => {
-  const { video, timeline, duration } = req.params;
+  const { video, timeline, duration } = req.query;
   try {
     if (
       video === undefined ||
       timeline === undefined ||
       duration == undefined
     ) {
-      throw new Error("request body가 조회되지 않습니다.");
+      throw new Error("request query가 조회되지 않습니다.");
     }
     const messageList = await commentService.getCommentsByVideo(
       video,
