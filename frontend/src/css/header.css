@@ -5,7 +5,8 @@
 }
 
 .Header {
-    position: absolute;
+    position: -webkit-sticky;
+    position: sticky;
     top: 0;
     z-index: 3;
     width: 100vw;
@@ -34,4 +35,9 @@
 
 .nickName {
     color: white;
+}
+
+.notTop{
+    background-color: black;
+    /* background-color: #1c1c1f; */
 }

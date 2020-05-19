@@ -5,8 +5,7 @@
 - 트렐로 그림 참조
 
 * index > App > header + listView / PlayView
-* listView > MovieCard - PlayView > Screen + ChatContainer
-* ChatContainer > Comment
+* listView > MovieCard
 
 ## 디렉토리
 
