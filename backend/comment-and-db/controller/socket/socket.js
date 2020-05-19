@@ -8,14 +8,17 @@ module.exports = (server) => {
 
         socket.on('join', (video) => {
             console.log('socket join!');
+            console.log('video: ', video);
             
             socket.join(video);
         });
 
-        socket.on('newComment', (id, message, createdAt, timeline, video) => {
+        socket.on('newComment', (data, callback) => {
             console.log('socket newComment!');
+            console.log(data);
 
-            io.to(video).emit('newMessage', { id: id, message: message, createdAt: createdAt, timeline: timeline });
+            io.to(data.video).emit('newMessage', { id: data.id, text: data.message, createdAt: data.createdAt, timeline: data.timeline });
+            callback();
         });
 
         socket.on('disconnect', () => {
