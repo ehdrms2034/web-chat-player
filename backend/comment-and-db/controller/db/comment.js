@@ -36,7 +36,7 @@ router.post("/createComment", async (req, res) => {
 });
 
 router.get("/getComments", async (req, res) => {
-  const { video, timeline, duration } = req.body;
+  const { video, timeline, duration } = req.params;
   try {
     if (
       video === undefined ||

@@ -22,9 +22,9 @@ router.post("/createUser", async (req, res) => {
 });
 
 router.get("/getNickname", async (req, res) => {
-  const { cookie } = req.body;
+  const { cookie } = req.query;
   try {
-    if (cookie === undefined) throw new Error("request body가 조회되지 않음");
+    if (cookie === undefined) throw new Error("request param이 조회되지 않음");
     const data = await userService.getNickname(cookie);
     res.send(
       generateResponse("success", "성공적으로 nickname을 조회했습니다.", data)
