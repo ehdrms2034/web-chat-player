@@ -6,8 +6,6 @@ import ChatContainer from "./ChatContainer.js";
 function PlayView({ match }) {
   // 파람스에서 아이디 말고 영상 정보를 다 받아왔으면 하는데 방법 찾는 중
   const movieId = match.params;
-  console.log(match.params);
-  console.log(movieId);
 
   // 아이디로 영상정보 받아오기 **
   if (!movieId) {

@@ -17,7 +17,6 @@ function Header() {
         <img alt="유저" src={userIcon} className="userImg" />
         {/* 유저 테이블의 닉네임 값 */}
         <div className="nickName center">닉네임</div>
-        <div className="nickName center">닉네임</div>
       </div>
     </div>
   );
