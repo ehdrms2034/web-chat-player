@@ -45,7 +45,11 @@ const ChatContainer = ({ _name, _timeline }) => {
     socket.on("newMessage", (message) => {
       // 여기서 타임라인에 맞게 거를 메시지는 거르고 추가할 메시지는 추가해서 정렬해야함.
       console.log("new message", message);
-      setMessages([...messages, message]);
+      let newarr = [...messages, message];
+      newarr.sort((a, b) => {
+        return a.timeline > b.timeline ? 1 : -1;
+      });
+      setMessages(newarr);
     });
   }, [messages]);
 
