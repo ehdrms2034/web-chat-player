@@ -33,7 +33,7 @@ function Header() {
       else await getNickname();
     }
     init();
-  });
+  },[cookie]);
 
   const createUser = async () => {
     const uuid4 = uuidv4();
