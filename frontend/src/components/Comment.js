@@ -1,7 +1,13 @@
 import React from "react";
 
-function Comment() {
-  return <div className="Comment">댓글</div>;
-}
+const Comment = ( { message: { id, text, createdAt, timeline }} ) => (
+  <div className="messageContainer">
+    <p className="sentText pr-10">{id}</p>
+    <div className="messageBox">
+      <p className="messageText">{text}</p>
+    </div>
+    <p className="sentDate pr-10">{createdAt}</p>
+  </div>
+);
 
 export default Comment;
