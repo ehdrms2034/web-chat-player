@@ -5,18 +5,17 @@ import io from 'socket.io-client';
 import ChatList from './ChatList'; //chat들을 렌더링할 list component
 
 const endpoint = "ws://49.50.162.195:3000";
-var socket = io(endpoint);   // ENDPOINT = socketServerURL
-
+var socket = io(endpoint);   
 const ChatContainer = () => {
   const [roomName, joinRoom] = useState('');
   const [clientMsg, handleNewMsg] = useState('');
-  const [msgs, handleAllMsgs] = useImmer([]);
+  const [msgs, handleAllMsgs] = useImmer([]); 
 
-
+  //2번째 인자가 []면 처음 한 번만 실행.
   useEffect(() => {
     socket.on('newMessage', (data)=> {
         handleAllMsgs(msgs => {
-            msgs.push(data);
+            msgs.push(data); // 불변성 관리 useImmer가 해줌
         });
       });
   }, []);
@@ -33,7 +32,7 @@ const ChatContainer = () => {
   }
   const sendMsg = () => {
     socket.emit('newComment', {id: "example-id", message:clientMsg, createdAt: new Date(), timeline:"11:11:11", video:roomName});
-    handleNewMsg('');
+    handleNewMsg(''); //input 비우기
  }
   
   return (
