@@ -14,14 +14,14 @@ class UserService {
 
   async getUserBycookie(cookie) {
     const data =  await User.findOne({ cookie });
-    if (data == null)
+    if (data === null || data ===undefined)
       throw new Error("조회하려는 cookie값이 존재하지 않습니다");
     return data;
 }
 
   async getNickname(cookie) {
     const userData = await User.findOne({ cookie });
-    if (userData == null)
+    if (userData === null || data === undefined)
       throw new Error("조회하려는 cookie값이 존재하지 않습니다");
     return userData.nickname;
   }

@@ -1,21 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const UserService = require("../../services/db/UserService");
-const APIResponse = require("../../models/APIResponse");
+const generateResponse = require("../../models/generateResponse");
 
 const userService = new UserService();
 
 router.post("/createUser", async (req, res) => {
   const { cookie, nickname } = req.body;
   try {
-    console.log(cookie,nickname);
-    await userService.createUser(cookie,nickname);
+    if (cookie === undefined || nickname === undefined)
+      throw new Error("request body가 조회되지 않음");
+    await userService.createUser(cookie, nickname);
     return res.send(
-      new APIResponse("success", "유저 생성에 성공했습니다.", nickname)
+      generateResponse("success", "유저 생성에 성공했습니다.", nickname)
     );
   } catch (error) {
     return res.send(
-      new APIResponse("error", "유저 생성에 실패했습니다.", error)
+      generateResponse("error", "유저 생성에 실패했습니다.", error.message)
     );
   }
 });
@@ -23,13 +24,14 @@ router.post("/createUser", async (req, res) => {
 router.get("/getNickname", async (req, res) => {
   const { cookie } = req.body;
   try {
+    if (cookie === undefined) throw new Error("request body가 조회되지 않음");
     const data = await userService.getNickname(cookie);
     res.send(
-      new APIResponse("success", "성공적으로 nickname을 조회했습니다.", data)
+      generateResponse("success", "성공적으로 nickname을 조회했습니다.", data)
     );
   } catch (error) {
     res.send(
-      new APIResponse("error", "nickname을 가져오는데 실패했습니다.", error)
+      generateResponse("error", "nickname을 가져오는데 실패했습니다.", error.message)
     );
   }
 });

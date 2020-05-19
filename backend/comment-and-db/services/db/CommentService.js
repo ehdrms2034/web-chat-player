@@ -46,8 +46,6 @@ class CommentService {
     let endMM = endDate.minute().toString();
     let endSS = endDate.second().toString();
 
-    console.log(basedDate, endDate);
-
     if (endHH.length < 2) endHH = "0" + endHH;
     if (endMM.length < 2) endMM = "0" + endMM;
     if (endSS.length < 2) endSS = "0" + endSS;
