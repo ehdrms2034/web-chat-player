@@ -10,7 +10,6 @@ function Header() {
   window.addEventListener("scroll", function(e) {
     let offSet = window.scrollY;
     offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop")
-
   });
 
   return (

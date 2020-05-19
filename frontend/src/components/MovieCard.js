@@ -7,6 +7,7 @@ function MovieCard(props) {
   const video = props.video;
   const date = video.uploadedAt.slice(0, 10).split("-").join(".");
   const url = `videos/${video._id}`;
+  const slicedSum = video.summary.length > 60 ? `${video.summary.slice(0,60)}...` : video.summary
 
   return (
     <Link to={url}>
@@ -15,8 +16,8 @@ function MovieCard(props) {
           <img src={video.posterUrl} alt="썸네일" />
         </div>
         <div className="MovieInfo">
-          <div className="MovieTitle"> {video.name} </div>
-          <div className="MovieSummary"> {video.summary} </div>
+          <h3 className="MovieTitle"> {video.name} </h3>
+          <div className="MovieSummary"> {slicedSum} </div>
           <div className="MovieDate"> {date} </div>
         </div>
       </div>

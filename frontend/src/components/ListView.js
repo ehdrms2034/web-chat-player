@@ -18,7 +18,9 @@ function ListView() {
   return (
     <div className="ListView">
       <h2>영상 목록</h2>
+      <div className="videoContainer">
       {Videos}
+      </div>
     </div>
   );
 }
