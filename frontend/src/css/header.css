@@ -1,43 +1,43 @@
 .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .Header {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    width: 100vw;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  width: 100vw;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .logoImg {
-    width: 100px;
-    padding: 20px;
-    padding-top: 30px;
+  width: 100px;
+  padding: 20px;
+  padding-top: 30px;
 }
 
 .userInfo {
-    padding: 20px;
-    display: flex;
-    align-items: center;
+  padding: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .userImg {
-    width: 30px;
-    padding: 10px;
+  width: 30px;
+  padding: 10px;
 }
 
 .nickName {
-    color: white;
+  color: white;
 }
 
-.notTop{
-    background-color: black;
-    /* background-color: #1c1c1f; */
+.notTop {
+  background-color: black;
+  /* background-color: #1c1c1f; */
 }

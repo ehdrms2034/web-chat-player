@@ -7,7 +7,7 @@ function MovieCard(props) {
   const video = props.video;
   const date = video.uploadedAt.slice(0, 10).split("-").join(".");
   const url = `videos/${video._id}`;
-  const slicedSummary = video.summary.length > 60 ? `${video.summary.slice(0,60)}...` : video.summary
+  const slicedSummary = video.summary.length > 60 ? `${video.summary.slice(0, 60)}...` : video.summary;
 
   return (
     <Link to={url}>

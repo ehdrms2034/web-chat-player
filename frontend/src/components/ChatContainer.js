@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, createRef, useEffect, useState } from "react";
+import "../css/playView.css";
 import io from "socket.io-client";
-import ReactPlayer from "react-player";
-
-import Comments from "./Comments";
+import Comment from "./Comment.js";
 import Input from "./Input";
 
 let socket;
@@ -14,21 +13,9 @@ const ChatContainer = ({ _name, _timeline }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const ENDPOINT = "ws://49.50.173.151:3000";
-  let _player = "";
-  const [time, handleTime] = useState(0);
-
-  const onPlayerReady = () => {
-    const hlsInstance = _player.getInternalPlayer("hls");
-    //console.log(hlsInstance);
-    // Note that we can assume we have the `Hls` global here
-    // as the player should be ready at this point
-    hlsInstance.on(window.Hls.Events.FRAG_LOADED, (data) => {
-      //console.log("FRAG_LOADED", data);
-    });
-  };
-  const ref = (player) => {
-    _player = player;
-  };
+  
+  const $input = createRef();
+  const $commentContainer = useRef();
 
   useEffect(() => {
     const name = _name;
@@ -44,24 +31,20 @@ const ChatContainer = ({ _name, _timeline }) => {
   useEffect(() => {
     socket.on("newMessage", (message) => {
       // 여기서 타임라인에 맞게 거를 메시지는 거르고 추가할 메시지는 추가해서 정렬해야함.
-      console.log("new message", message);
-      let newarr = [...messages, message];
-      newarr.sort((a, b) => {
-        return a.timeline > b.timeline ? 1 : -1;
-      });
-      setMessages(newarr);
+      //   console.log("new message", message);
+      setMessages([...messages, message]);
     });
+    // To bottom
+    console.log($commentContainer.current.scrollHeight);
+    $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
   }, [messages]);
-
-  // 타임라인 매번 갱신
-  // useEffect(() => {
-  //   const timeline = _timeline;
-  //   setTimeline(timeline);
-  // }), [_timeline];
 
   const sendMessage = (e) => {
     e.preventDefault();
     console.log("send message", message);
+
+    //계속 focusing
+    $input.current.focus();
 
     if (message) {
       // 원래 이건데 임시 데이터로 대체함.
@@ -71,8 +54,8 @@ const ChatContainer = ({ _name, _timeline }) => {
         {
           id: "닉네임",
           message: message,
+          timeline: "타임라인",
           createdAt: new Date().getTime(),
-          timeline: time,
           video: "video1",
         },
         () => setMessage("")
@@ -80,23 +63,16 @@ const ChatContainer = ({ _name, _timeline }) => {
       // DB REST API 들어가야함.
     }
   };
-  const onProgress = (p) => {
-    handleTime(p.playedSeconds);
-  };
+  
+  const Messages = messages.map((message, index) => <Comment key={index} message={message} />);
 
   return (
-    <div>
-      <ReactPlayer
-        ref={ref}
-        url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"}
-        playing
-        onReady={onPlayerReady}
-        controls={true}
-        onSeek={(e) => console.log(e)}
-        onProgress={onProgress}
-      />
-      <Comments messages={messages} />
-      <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+    <div className="ChatContainer">
+      <div ref={$commentContainer} className="commentContainer">
+        <div className="chatHeader">타임라인별 댓글</div>
+        {Messages}
+      </div>
+      <Input ref={$input} message={message} setMessage={setMessage} sendMessage={sendMessage} />
     </div>
   );
 };
