@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import Comment from "./Comment";
 import Input from "./Input";
 import Axios from "axios";
+import arrow from "../imgs/arrow.png";
 
 import useInterval from "@use-it/interval";
 
@@ -14,7 +15,7 @@ let socket;
 
 // 정해진 분량의 댓글을 호출
 const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH) => {
-  const URL = `${COMMENT_BASE_URL}getComments?video=${videoId}&timeline=${startTime}&duration=${startTime + until}`;
+  const URL = `${COMMENT_BASE_URL}comments?video=${videoId}&timeline=${startTime}&duration=${startTime + until}`;
   try {
     const data = await Axios.get(URL).then((res) => res.data);
     if (data.response === "error") throw data;
@@ -60,10 +61,21 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
       console.log(`INFO (ChatContainer.js) : 현재 보관중인 메시지 목록 : ${JSON.stringify(nextMessages, null, 2)}`);
       setMessages(nextMessages);
     });
-    // 메시지 새로 받을 때마다 스크롤 최하단으로 이동
-    $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
+    // 메시지 새로 받을 때마다 스크롤이 맨밑이면 스크롤 최하단으로 이동
+    const currentY = $commentContainer.current.scrollHeight - $commentContainer.current.scrollTop;
+    const scrollViewHeight = $commentContainer.current.clientHeight + 100;
+    if (currentY === scrollViewHeight) {
+      $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
+    } else {
+      console.log("새메시지 도착");
+    }
+
     return () => socket.off("newMessage");
   }, [messages]);
+
+  const toBottom = () => {
+    $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
+  };
 
   // -------------------------
   //  socket으로부터 댓글 받기
@@ -100,6 +112,8 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
       },
       () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지? @장정윤님
     );
+    $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
+    $input.current.focus();
     // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
@@ -117,10 +131,12 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader">타임라인별 댓글</div>
-        {Messages}
+        <div className="chatHeader"> 타임라인별 댓글 </div> {Messages}
       </div>
       <Input ref={$input} sendMessage={sendMessage} />
+      <div className="floatBottom" onClick={toBottom}>
+        <img className="arrowImg" src={arrow} />
+      </div>
     </div>
   );
 };

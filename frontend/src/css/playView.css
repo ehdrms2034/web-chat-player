@@ -40,6 +40,7 @@
   font-size: 1rem;
   color: #c5c5c5;
 }
+
 .PlayDate {
   font-size: 0.8rem;
   margin-top: 10px;
@@ -67,6 +68,7 @@
   background-color: rgba(34, 34, 41, 0.267);
   border-radius: 10px;
 }
+
 .chatHeader {
   border-radius: 10px 10px 0 0;
   display: flex;
@@ -136,9 +138,10 @@ input {
   display: flex;
   align-items: flex-end;
 }
+
 .messageText {
   line-height: 150%;
-  background-color: rgba(30, 30, 43, 0.507);
+  background-color: rgba(74, 74, 100, 0.733);
   border-radius: 0 20px 20px 20px;
   padding: 20px 20px;
   margin: 5px 10px 0 0;
@@ -155,4 +158,22 @@ input {
 
 .sentDate {
   min-width: 40px;
+}
+
+.floatBottom {
+  position: absolute;
+  bottom: 70px;
+  width: 40px;
+  height: 40px;
+  right: 20px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px #e9e6e648;
+}
+
+.arrowImg {
+  width: 10px;
 }
