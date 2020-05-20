@@ -1,6 +1,5 @@
 import React from "react";
 import "../css/playView.css";
-import Screen from "./Screen.js";
 import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
 
@@ -23,7 +22,6 @@ function PlayView({ match }) {
   return (
     <div className="PlayView">
       <section className="video">
-        <Screen /> {/* TODO: react-Player in <Screen /> */}
         <div className="playInfo">
           <div className="MovieTitle">{video.name}</div>
           <div className="MovieSummary">{video.summary}</div>

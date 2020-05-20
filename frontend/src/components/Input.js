@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ sendMessage }) => {
+const Input = React.forwardRef(({ sendMessage }, ref) => {
   const [message, setMessage] = React.useState("");
   const submitHandler = (e) => {
     e.preventDefault();
@@ -11,9 +11,10 @@ const Input = ({ sendMessage }) => {
   return (
     <form className="form">
       <input
+        ref={ref}
         className="input"
         type="text"
-        placeholder="댓글을 입력해보아요."
+        placeholder="현재 보고계신 부분에 코멘트를 입력하세요"
         value={message}
         onChange={({ target: { value } }) => setMessage(value)}
       />
@@ -22,6 +23,6 @@ const Input = ({ sendMessage }) => {
       </button>
     </form>
   );
-};
+});
 
 export default Input;

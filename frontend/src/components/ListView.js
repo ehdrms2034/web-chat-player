@@ -4,6 +4,7 @@ import MovieCard from "./MovieCard.js";
 import axios from "axios";
 
 function ListView() {
+  console.log("ListView");
   const [videos, setVideos] = React.useState([]);
   const METADATA_BASE_URL = "http://27.96.130.172/api/video";
 
