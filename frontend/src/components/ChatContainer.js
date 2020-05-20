@@ -60,15 +60,8 @@ const _createComments = async (videoId, message, timeline) => {
     return [errComment];
   }
 };
-export const convertTime = (num) => {
-  const h = Math.floor(num / 3600);
-  const hh = h <= 9 ? "0" + h : h;
-  const m = Math.floor(num / 60) - hh * 60;
-  const mm = m <= 9 ? "0" + m : m;
-  const s = Math.floor(num % 60);
-  const ss = s <= 9 ? "0" + s : s;
-  const ret = hh + ":" + mm + ":" + ss;
-  return ret;
+const convertTime = (num) => {
+  return new Date(num * 1000).toISOString().substr(11, 8);
 };
 const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
   const [messages, setMessages] = useState([]);
@@ -156,7 +149,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
 
   const filteredMessages = messages
     .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
-    .map((message, index) => <Comment key={index} message={message} />);
+    .map((message, index) => <Comment key={index} message={message} onConvert={convertTime} />);
 
   return (
     <div className="ChatContainer">
