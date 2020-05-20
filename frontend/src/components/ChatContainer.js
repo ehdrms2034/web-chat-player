@@ -145,7 +145,7 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
     socket.emit(
       "newComment",
       {
-        id: _name,
+        id: TmpCookie.load("nickname"),
         message,
         createdAt: new Date(),
         timeline: Math.floor(_timeline * 100) / 100,
