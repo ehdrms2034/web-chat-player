@@ -32,15 +32,16 @@ jobs:
         env:
           CI: ""
 
-      - name: Copy folder content recursively to remote
-        uses: garygrossgarten/github-action-scp@release
+      - name: Deploy to Server(Naver2)
+        uses: appleboy/scp-action@master
         with:
-          local: test
-          remote: scp/directory
           host: "27.96.130.172"
           port: "22"
           username: "root"
-          privateKey: ${{ secrets.HACKDAY_SERVER2_SSH }}
+          key: ${{ secrets.HACKDAY_SERVER2_SSH }}
+          source: "frontend/build"
+          target: "/root/test"
+          rm: true
 
       # - name: Deploy to Server(Naver2)
       #   uses: easingthemes/ssh-deploy@v2.0.7
