@@ -72,17 +72,14 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   //  socket 연결/관리
   // -------------------------
   const ENDPOINT = "ws://49.50.173.151:3000";
-  // 소켓은 최초 1회만 연결
+
   useEffect(() => {
+    // 소켓은 최초 1회만 연결
     socket = io(ENDPOINT);
     socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
     socket.emit("join", "video1");
 
-    // -------------------------
-    //  socket으로부터 댓글 받기
-    // -------------------------
-
-    // - 최초 1회 (0초 지점) 처리, "+5" 는 보정치
+    // - 최초 1회 (0초 지점) 전체 댓글 가져오기
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
