@@ -20,7 +20,7 @@ function Header() {
   const $Header = useRef();
   // scroll처리
   useEffect(() => {
-    window.addEventListener("scroll", function (e) {
+    window.addEventListener("scroll", function(e) {
       let offSet = window.scrollY;
       offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop");
     });
@@ -59,8 +59,10 @@ function Header() {
         cookie: id,
       },
     });
-    if (response.data.response === "success") setNickname(response.data.data);
-    else await createUser();
+    if (response.data.response === "success") {
+      setNickname(response.data.data);
+      setCookie("nickname", response.data.data);
+    } else await createUser();
   };
 
   return (
