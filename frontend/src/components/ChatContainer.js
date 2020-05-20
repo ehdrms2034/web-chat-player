@@ -139,7 +139,9 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   //  socket으로 댓글 보내기
   // -------------------------
   const sendMessage = (message) => {
-    if (!message || message.length === 0) return;
+    // 공백제거 코드
+    const blank_pattern = /^\s+|\s+$/g;
+    if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
     socket.emit(
@@ -173,12 +175,12 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> 타임라인별 댓글 </div> {Messages}{" "}
-      </div>{" "}
-      <Input ref={$input} sendMessage={sendMessage} />{" "}
+        <div className="chatHeader"> 타임라인별 댓글 </div> {Messages}
+      </div>
+      <Input ref={$input} sendMessage={sendMessage} />
       <div className="floatBottom" onClick={toBottom}>
-        <img className="arrowImg" src={arrow} />{" "}
-      </div>{" "}
+        <img className="arrowImg" src={arrow} />
+      </div>
     </div>
   );
 };
