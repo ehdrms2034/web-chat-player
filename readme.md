@@ -79,7 +79,7 @@ Request Ex : /user/getNickname?cookie=id
 {
   "response" : "success",
   "message" : "성공적으로 nickname을 조회했습니다.",
-  "data" : nickname
+  "data" : "nickname"
 }
 ```
 
