@@ -32,16 +32,25 @@ jobs:
         env:
           CI: ""
 
-      - name: Deploy to Server(Naver2)
-        uses: easingthemes/ssh-deploy@v2.0.7
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.HACKDAY_SERVER2_SSH }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "frontend/build"
-          REMOTE_HOST: "27.96.130.172"
-          REMOTE_USER: "root"
-          REMOTE_PORT: "22"
-          TARGET: "/root/test/"
+      - name: Deploy -- Copy folder content recursively to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: "frontend/build"
+          remote: "/root/test/"
+          host: "22"
+          username: "root"
+          privateKey: ${{ secrets.HACKDAY_SERVER2_SSH }}
+
+      # - name: Deploy to Server(Naver2)
+      #   uses: easingthemes/ssh-deploy@v2.0.7
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.HACKDAY_SERVER2_SSH }}
+      #     ARGS: "-rltgoDzvO"
+      #     SOURCE: "frontend/build"
+      #     REMOTE_HOST: "27.96.130.172"
+      #     REMOTE_USER: "root"
+      #     REMOTE_PORT: "22"
+      #     TARGET: "/root/test/"
 
       - name: LOVE HACKDAY
         run: "done"
