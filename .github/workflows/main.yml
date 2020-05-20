@@ -55,4 +55,4 @@ jobs:
       #     TARGET: "/root/test/"
 
       - name: LOVE HACKDAY
-        run: "done"
+        run: echo done
