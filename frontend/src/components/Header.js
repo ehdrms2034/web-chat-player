@@ -19,10 +19,15 @@ const customConfig = {
 function Header() {
   const $Header = useRef();
   // scroll처리
-  window.addEventListener("scroll", function (e) {
-    let offSet = window.scrollY;
-    offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop");
-  });
+  useEffect(() => {
+    window.addEventListener("scroll", function (e) {
+      let offSet = window.scrollY;
+      offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop");
+    });
+    return () => {
+      window.removeEventListener("scroll");
+    };
+  }, [input]);
 
   const [cookie, setCookie] = useCookies(["cookie"]);
   const [nickname, setNickname] = useState("닉네임");

@@ -13,6 +13,7 @@ const ChatContainer = ({ _name, _timeline }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const ENDPOINT = "ws://49.50.173.151:3000";
+  
   const $input = createRef();
   const $commentContainer = useRef();
 
@@ -38,15 +39,10 @@ const ChatContainer = ({ _name, _timeline }) => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
   }, [messages]);
 
-  // 타임라인 매번 갱신
-  // useEffect(() => {
-  //   const timeline = _timeline;
-  //   setTimeline(timeline);
-  // }), [_timeline];
-
   const sendMessage = (e) => {
     e.preventDefault();
     console.log("send message", message);
+
     //계속 focusing
     $input.current.focus();
 
@@ -58,8 +54,8 @@ const ChatContainer = ({ _name, _timeline }) => {
         {
           id: "닉네임",
           message: message,
-          createdAt: "생성시간",
           timeline: "타임라인",
+          createdAt: new Date().getTime(),
           video: "video1",
         },
         () => setMessage("")
@@ -67,6 +63,7 @@ const ChatContainer = ({ _name, _timeline }) => {
       // DB REST API 들어가야함.
     }
   };
+  
   const Messages = messages.map((message, index) => <Comment key={index} message={message} />);
 
   return (

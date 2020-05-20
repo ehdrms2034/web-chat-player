@@ -1,7 +1,5 @@
 import React from "react";
 
-export default Comment;
-
 function Comment({ message: { id, text, createdAt } }) {
   return (
     <div className="Comment">
@@ -13,3 +11,5 @@ function Comment({ message: { id, text, createdAt } }) {
     </div>
   );
 }
+
+export default Comment;
