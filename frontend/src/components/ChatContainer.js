@@ -60,11 +60,19 @@ const _createComments = async (videoId, message, timeline) => {
     return [errComment];
   }
 };
-
-const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
-  const [name, setName] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
+export const convertTime = (num) => {
+  const h = Math.floor(num / 3600);
+  const hh = h <= 9 ? "0" + h : h;
+  const m = Math.floor(num / 60) - hh * 60;
+  const mm = m <= 9 ? "0" + m : m;
+  const s = Math.floor(num % 60);
+  const ss = s <= 9 ? "0" + s : s;
+  const ret = hh + ":" + mm + ":" + ss;
+  return ret;
+};
+const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
   const [messages, setMessages] = useState([]);
+  const [convertedLastPoint, setConvertedLastPoint] = useState("");
   const $input = createRef();
   const $commentContainer = useRef();
 
@@ -72,7 +80,11 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   //  socket 연결/관리
   // -------------------------
   const ENDPOINT = "ws://49.50.173.151:3000";
-
+  useEffect(() => {
+    const conv = convertTime(_lastPoint);
+    console.log("conv: ", conv);
+    setConvertedLastPoint(conv);
+  }, [_lastPoint]);
   useEffect(() => {
     // 소켓은 최초 1회만 연결
     socket = io(ENDPOINT);
@@ -149,7 +161,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : _lastPoint + "이후"} 댓글 </div>{" "}
+        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>{" "}
         {filteredMessages}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
