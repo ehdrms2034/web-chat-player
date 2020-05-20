@@ -65,7 +65,8 @@ const _createComments = async (videoId, message, timeline) => {
   }
 };
 
-const ChatContainer = ({ _name, _videoId, _timeline }) => {
+const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
+  console.log(_lastPoint);
   const [name, setName] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [messages, setMessages] = useState([]);
@@ -161,7 +162,7 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   };
 
   const filteredMessages = messages
-    .filter((message) => message.timeline <= _timeline)
+    .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
     .map((message, index) => <Comment key={index} message={message} />);
 
   // -------------------------
