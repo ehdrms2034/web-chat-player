@@ -47,7 +47,7 @@ router.get("/comments", async (req, res) => {
     const messageList = await commentService.getComments(
       video,
       timeline,
-      duration
+      offset
     );
     const parsedList = messageList.map((it) => {
       return {
