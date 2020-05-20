@@ -14,12 +14,12 @@
 .Screen {
   /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   width: 60vw !important;
-  border: 1px solid white;
+  /* border: 1px solid white;
   box-sizing: border-box; */
   position: relative;
-  padding-top: 56.25%;
+  /* padding-top: 56.25%; */
 }
 
 .react-player {
@@ -52,7 +52,7 @@
   margin: 10px;
   padding: 20px 10px;
   box-sizing: border-box;
-  position: relative;
+  margin-top: calc(60vw / 1.77);
 }
 
 /* 채팅부분 */
