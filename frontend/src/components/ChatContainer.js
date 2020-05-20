@@ -35,7 +35,6 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
 
 //댓글 REST API에 저장
 const _createComments = async (videoId, message, timeline) => {
-  console.log("in createComments");
   const URL = `${COMMENT_BASE_URL}comment`;
   const BODY = {
     cookie: TmpCookie.load("id"),
@@ -44,12 +43,9 @@ const _createComments = async (videoId, message, timeline) => {
     timeline,
   };
   try {
-    console.log(BODY);
     const data = await Axios.post(URL, BODY).then((res) => {
-      console.log(res);
       return res.data;
     });
-    console.log("data: ", data);
     if (data.response === "error") throw data;
     return data.data;
   } catch (error) {
@@ -66,7 +62,6 @@ const _createComments = async (videoId, message, timeline) => {
 };
 
 const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
-  console.log(_lastPoint);
   const [name, setName] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [messages, setMessages] = useState([]);
@@ -88,7 +83,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
       console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
-      console.log("newmsg: ", newMessage);
+      //socket 서버는 id로, comment 서버는 nickname으로 보내게 되어있어서 통일
       const convertedMsg = {
         nickname: newMessage.id,
         message: newMessage.text,
@@ -106,7 +101,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     if (currentY === scrollViewHeight) {
       $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     } else {
-      console.log("새메시지 도착");
+      //console.log("새메시지 도착");
     }
 
     return () => socket.off("newMessage");
@@ -128,15 +123,6 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
       setMessages(comments);
     });
   }, []);
-  /*
-  useInterval(() => {
-    // - 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함 (${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 call)
-    // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
-    _getComments(_videoId, Math.floor(_timeline * 100) / 100, COMMENT_SLICE_LENGTH + 5).then((comments) =>
-      setMessages([...messages, comments])
-    );
-  }, COMMENT_SLICE_LENGTH * 1000);
-*/
 
   // -------------------------
   //  socket으로 댓글 보내기
@@ -147,40 +133,26 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
-    socket.emit(
-      "newComment",
-      {
-        id: TmpCookie.load("nickname"),
-        message,
-        createdAt: new Date(),
-        timeline: Math.floor(_timeline * 100) / 100,
-        video: "video1",
-      },
-      () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지? @장정윤님
-    );
+    socket.emit("newComment", {
+      id: TmpCookie.load("nickname"),
+      message,
+      createdAt: new Date(),
+      timeline: Math.floor(_timeline * 100) / 100,
+      video: "video1",
+    });
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
-    // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
   const filteredMessages = messages
     .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
     .map((message, index) => <Comment key={index} message={message} />);
 
-  // -------------------------
-  //  디버깅
-  // -------------------------
-  /*
-  const [timeline, setTimeline] = useState(0); // TODO: <-- 동영상 플레이어에서 전달받기 (임시 state임)
-  // TODO : 비디오에서 가져오는 걸로 바꾸어야 함. 이건 단지 동영상 흘러가는 느낌을 주는 타임라인일 뿐.
-  useInterval(() => {
-    setTimeline(timeline + 0.01); // 0.01초씩 흘러가는 상황 시뮬레이션
-  }, 10);
-*/
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> 타임라인별 댓글 </div> {filteredMessages}{" "}
+        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : _lastPoint + "이후"} 댓글 </div>{" "}
+        {filteredMessages}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
       <div className="floatBottom" onClick={toBottom}>
