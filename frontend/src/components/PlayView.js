@@ -2,6 +2,7 @@ import React from "react";
 import "../css/playView.css";
 import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
+import ReactPlayer from "react-player";
 
 function PlayView({ match }) {
   const videoId = match.params.id;
@@ -22,6 +23,16 @@ function PlayView({ match }) {
   return (
     <div className="PlayView">
       <section className="video">
+        <ReactPlayer
+          className="Screen"
+          // ref={ref}
+          url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"}
+          playing
+          // onReady={onPlayerReady}
+          controls={true}
+          onSeek={(e) => console.log(e)}
+          // onProgress={onProgress}
+        />
         <div className="playInfo">
           <div className="MovieTitle">{video.name}</div>
           <div className="MovieSummary">{video.summary}</div>
