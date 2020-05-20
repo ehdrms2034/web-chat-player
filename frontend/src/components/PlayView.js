@@ -43,7 +43,7 @@ function PlayView({ match }) {
         <ReactPlayer
           className="react-player"
           ref={ref}
-          url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"}
+          url={video.videoUrl}
           playing
           onReady={onPlayerReady}
           controls={true}
