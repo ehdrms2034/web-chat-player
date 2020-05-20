@@ -12,7 +12,7 @@ const COMMENT_SLICE_LENGTH = 30;
 
 let socket;
 
-// 정해진 분량의 댓글을 호출하는 함수입니다. 주기적으로 불러줄 대상입니다.
+// 정해진 분량의 댓글을 호출
 const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH) => {
   const URL = `${COMMENT_BASE_URL}getComments?video=${videoId}&timeline=${startTime}&duration=${startTime + until}`;
   try {
@@ -32,25 +32,12 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
 };
 
 const ChatContainer = ({ _name, _timeline, _videoId }) => {
-  const [timeline, setTimeline] = useState(0); // TODO: <-- 동영상 플레이어에서 전달받기 (임시 state임)
   const [messages, setMessages] = useState([]);
+
+  // -------------------------
+  //  socket 연결/관리
+  // -------------------------
   const ENDPOINT = "ws://49.50.173.151:3000";
-
-  // 동영상이 0초, 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함
-  useEffect(() => {
-    // - 최초 1회 처리
-    // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서
-    //   조금 일찍, 더 많이 받도록 하였습니다.
-    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) => setMessages(comments));
-  }, []);
-  useInterval(() => {
-    // - 이후 ${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 처리
-    // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
-    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) =>
-      setMessages([...messages, comments])
-    );
-  }, COMMENT_SLICE_LENGTH * 1000);
-
   // 소켓은 최초 1회만 연결
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -71,15 +58,26 @@ const ChatContainer = ({ _name, _timeline, _videoId }) => {
     return () => socket.off("newMessage");
   }, [messages]);
 
-  // TODO : 비디오에서 가져오는 걸로 바꾸어야 함. 이건 단지 동영상 흘러가는 느낌을 주는 타임라인일 뿐.
+  // -------------------------
+  //  socket으로부터 댓글 받기
+  // -------------------------
   useEffect(() => {
-    // 1초에 1씩 timeline 증가
-    setTimeout(() => {
-      console.log(`INFO (ChatContainer.js) : 시간 경과 흉내내기 : ${timeline}`);
-      setTimeline(timeline + 1);
-    }, 1000);
-  }, [timeline]);
+    // - 최초 1회 (0초 지점) 처리
+    // TODO : 추후엔 동영상 시작 버튼을 누르는 시점에, 사용자가 설정한 타임라인 부터 가져오는 것으로 변경해야 할 것임.
+    // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서 조금 일찍 & 더 많이 댓글을 받도록 하였습니다.
+    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) => setMessages(comments));
+  }, []);
+  useInterval(() => {
+    // - 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함 (${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 call)
+    // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
+    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) =>
+      setMessages([...messages, comments])
+    );
+  }, COMMENT_SLICE_LENGTH * 1000);
 
+  // -------------------------
+  //  socket으로 댓글 보내기
+  // -------------------------
   const sendMessage = (message) => {
     if (!message || message.length === 0) return;
     console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
@@ -93,15 +91,25 @@ const ChatContainer = ({ _name, _timeline, _videoId }) => {
         timeline,
         video: "video1",
       },
-      () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지?
+      () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지? @장정윤님
     );
     // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
+  // -------------------------
+  //  디버깅
+  // -------------------------
+  const [timeline, setTimeline] = useState(0); // TODO: <-- 동영상 플레이어에서 전달받기 (임시 state임)
+  // TODO : 비디오에서 가져오는 걸로 바꾸어야 함. 이건 단지 동영상 흘러가는 느낌을 주는 타임라인일 뿐.
+  useInterval(() => {
+    setTimeline(timeline + 0.01); // 0.01초씩 흘러가는 상황 시뮬레이션
+  }, 10);
+
   return (
     <div>
-      <Comments messages={messages} timeline={timeline} />
+      <Comments messages={messages} timeline={timeline} /> {/* 디버깅 (timeline 관찰용) */}
       <Input sendMessage={sendMessage} />
+      <h2>동영상 타임라인 : {Math.floor(timeline * 100) / 100}</h2>
     </div>
   );
 };
