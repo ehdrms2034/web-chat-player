@@ -5,13 +5,15 @@ import Comments from "./Comments";
 import Input from "./Input";
 import Axios from "axios";
 
+import useInterval from "@use-it/interval";
+
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
-const DEFAULT_GET_COMMENT_LIMIT = 30;
+const COMMENT_SLICE_LENGTH = 30;
 
 let socket;
 
 // 정해진 분량의 댓글을 호출하는 함수입니다. 주기적으로 불러줄 대상입니다.
-const _getComments = async (videoId, startTime = 0, until = DEFAULT_GET_COMMENT_LIMIT) => {
+const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH) => {
   const URL = `${COMMENT_BASE_URL}getComments?video=${videoId}&timeline=${startTime}&duration=${startTime + until}`;
   try {
     const data = await Axios.get(URL).then((res) => res.data);
@@ -32,16 +34,23 @@ const _getComments = async (videoId, startTime = 0, until = DEFAULT_GET_COMMENT_
 const ChatContainer = ({ _name, _timeline, _videoId }) => {
   const [timeline, setTimeline] = useState(0); // TODO: <-- 동영상 플레이어에서 전달받기 (임시 state임)
   const [messages, setMessages] = useState([]);
-  const [isReqComments, setIsReqComments] = useState(false); // 하나의 timeline에 DB 댓글을 두 번 요청하지 않게 하는 트거
   const ENDPOINT = "ws://49.50.173.151:3000";
 
-  // 동영상이 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함
-  if (!isReqComments && timeline > 0 && timeline % 30 === 0) {
-    setIsReqComments(true); // 중복 요청하지 않게 트리거 on
-    _getComments(_videoId, 0, 30).then((comments) => setMessages([...messages, comments]));
-  } else if (isReqComments && (timeline - 5) % 30 === 0) {
-    setIsReqComments(false); // 충분히 시간이 지났다면 다시 트리거 off
-  }
+  // 동영상이 0초, 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함
+  useEffect(() => {
+    // - 최초 1회 처리
+    // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서
+    //   조금 일찍, 더 많이 받도록 하였습니다.
+    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) => setMessages(comments));
+  }, []);
+  useInterval(() => {
+    console.log("?");
+    // - 이후 ${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 처리
+    // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
+    _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) =>
+      setMessages([...messages, comments])
+    );
+  }, COMMENT_SLICE_LENGTH * 1000);
 
   // 소켓은 최초 1회만 연결
   useEffect(() => {
@@ -50,7 +59,7 @@ const ChatContainer = ({ _name, _timeline, _videoId }) => {
     socket.emit("join", "video1");
   }, []);
 
-  // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state를 추적하지 못해서.
+  // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
       console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
