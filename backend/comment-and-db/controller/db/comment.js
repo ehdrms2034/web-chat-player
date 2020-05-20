@@ -19,7 +19,7 @@ router.post("/comment", async (req, res) => {
     )
       throw new Error("request body가 조회 되지 않습니다");
     const owner = await userService.getUserBycookie(cookie);
-    await commentService.createComment(owner, video, message, replacedTime);
+    await commentService.createComment(owner, video, message, timeline);
     res.send(
       generateResponse("success", "성공적으로 댓글을 작성했습니다.", null)
     );
