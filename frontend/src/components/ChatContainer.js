@@ -44,7 +44,6 @@ const ChatContainer = ({ _name, _timeline, _videoId }) => {
     _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) => setMessages(comments));
   }, []);
   useInterval(() => {
-    console.log("?");
     // - 이후 ${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 처리
     // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
     _getComments(_videoId, Math.floor(timeline), COMMENT_SLICE_LENGTH + 5).then((comments) =>
