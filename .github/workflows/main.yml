@@ -39,8 +39,9 @@ jobs:
           port: "22"
           username: "root"
           key: ${{ secrets.HACKDAY_SERVER2_SSH }}
-          source: "frontend/build/"
-          target: "/root/test/"
+          source: "frontend/build"
+          target: "/root/test"
+          rm: true
 
       # - name: Deploy to Server(Naver2)
       #   uses: easingthemes/ssh-deploy@v2.0.7
