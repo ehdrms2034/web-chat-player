@@ -32,12 +32,13 @@ jobs:
         env:
           CI: ""
 
-      - name: Deploy -- Copy folder content recursively to remote
+      - name: Copy folder content recursively to remote
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: "frontend/build"
-          remote: "/root/test/"
-          host: "22"
+          local: test
+          remote: scp/directory
+          host: "27.96.130.172"
+          port: "22"
           username: "root"
           privateKey: ${{ secrets.HACKDAY_SERVER2_SSH }}
 
