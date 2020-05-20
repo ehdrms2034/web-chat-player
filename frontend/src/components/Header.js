@@ -27,7 +27,7 @@ function Header() {
     return () => {
       window.removeEventListener("scroll");
     };
-  }, [input]);
+  }, []);
 
   const [cookie, setCookie] = useCookies(["cookie"]);
   const [nickname, setNickname] = useState("닉네임");

@@ -1,36 +1,34 @@
 import React from "react";
 import "../css/playView.css";
-import Screen from "./Screen.js";
 import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
 
 function PlayView({ match }) {
-  console.log(match.params.id);
-  const movieId = match.params.id;
+  const videoId = match.params.id;
   const [video, setVideos] = React.useState({});
+  const METADATA_BASE_URL = "http://27.96.130.172/api/video";
+
   React.useEffect(() => {
     axios
-      .get(`http://27.96.135.160:3000/video/${movieId}`)
+      .get(`${METADATA_BASE_URL}/video/${videoId}`)
       .then((res) => setVideos(res.data))
       .catch((err) => setVideos([]));
-  }, [movieId]);
+  }, [videoId]);
 
-  if (!movieId) {
+  if (!videoId) {
     return <div> 존재하지 않는 영상입니다 </div>;
   }
 
   return (
     <div className="PlayView">
       <section className="video">
-        {/* 여기에 ReactPlayer 삽입 className="Screen" */}
-        <Screen />
         <div className="playInfo">
-          <div className="PlayTitle">{video.name}</div>
-          <div className="PlaySummary">{video.summary}</div>
-          <div className="PlayDate">{new Date(video.uploadedAt).toLocaleDateString()}</div>
+          <div className="MovieTitle">{video.name}</div>
+          <div className="MovieSummary">{video.summary}</div>
+          <div className="MovieDate">{new Date(video.uploadedAt).toLocaleDateString()}</div>
         </div>
       </section>
-      <ChatContainer _name={"laikhan"} _timeline={"11:22:33"} />
+      <ChatContainer _videoId={videoId} />
     </div>
   );
 }

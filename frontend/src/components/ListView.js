@@ -6,8 +6,10 @@ import axios from "axios";
 function ListView() {
   console.log("ListView");
   const [videos, setVideos] = React.useState([]);
+  const METADATA_BASE_URL = "http://27.96.130.172/api/video";
+
   React.useEffect(() => {
-    axios.get("http://27.96.135.160:3000/videos").then((res) => {
+    axios.get(`${METADATA_BASE_URL}/videos`).then((res) => {
       setVideos(res.data);
     });
   }, []);
