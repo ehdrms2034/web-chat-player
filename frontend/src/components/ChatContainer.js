@@ -10,7 +10,7 @@ import useInterval from "@use-it/interval";
 
 import TmpCookie from "react-cookies";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
-const COMMENT_SLICE_LENGTH = 30;
+const COMMENT_SLICE_LENGTH = 999999;
 
 let socket;
 
@@ -87,6 +87,7 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
       console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
+      console.log("newmsg: ", newMessage);
       const convertedMsg = {
         nickname: newMessage.id,
         message: newMessage.text,
@@ -121,12 +122,12 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
     // - 최초 1회 (0초 지점) 처리
     // TODO : 추후엔 동영상 시작 버튼을 누르는 시점에, 사용자가 설정한 타임라인 부터 가져오는 것으로 변경해야 할 것임.
     // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서 조금 일찍 & 더 많이 댓글을 받도록 하였습니다.
-    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH + 5).then((comments) => {
+    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
-      console.log("commmmments", comments);
     });
   }, []);
+  /*
   useInterval(() => {
     // - 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함 (${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 call)
     // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
@@ -134,6 +135,7 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
       setMessages([...messages, comments])
     );
   }, COMMENT_SLICE_LENGTH * 1000);
+*/
 
   // -------------------------
   //  socket으로 댓글 보내기
