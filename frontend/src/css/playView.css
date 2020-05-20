@@ -12,12 +12,20 @@
 }
 
 .Screen {
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  height: 34vw;
+  width: 60vw !important;
   border: 1px solid white;
-  box-sizing: border-box;
+  box-sizing: border-box; */
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .PlayTitle {

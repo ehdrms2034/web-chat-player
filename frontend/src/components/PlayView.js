@@ -23,20 +23,23 @@ function PlayView({ match }) {
   return (
     <div className="PlayView">
       <section className="video">
-        <ReactPlayer
-          className="Screen"
-          // ref={ref}
-          url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"}
-          playing
-          // onReady={onPlayerReady}
-          controls={true}
-          onSeek={(e) => console.log(e)}
-          // onProgress={onProgress}
-        />
+        <div className="Screen">
+          <ReactPlayer
+            // ref={ref}
+            url={"http://49.50.162.195:8080/videos/whatsuda.m3u8"}
+            playing
+            // onReady={onPlayerReady}
+            controls={true}
+            onSeek={(e) => console.log(e)}
+            // onProgress={onProgress}
+            className="react-player"
+            width="60vw"
+            height="auto"
+          />
+        </div>
         <div className="playInfo">
-          <div className="MovieTitle">{video.name}</div>
-          <div className="MovieSummary">{video.summary}</div>
-          <div className="MovieDate">{new Date(video.uploadedAt).toLocaleDateString()}</div>
+          <div className="PlayTitle"> {video.name} </div> <div className="PlaySummary"> {video.summary} </div>
+          <div className="PlayDate"> {new Date(video.uploadedAt).toLocaleDateString()} </div>
         </div>
       </section>
       <ChatContainer _videoId={videoId} />
