@@ -160,7 +160,9 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
     // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
-  const Messages = messages.map((message, index) => <Comment key={index} message={message} />);
+  const filteredMessages = messages
+    .filter((message) => message.timeline <= _timeline)
+    .map((message, index) => <Comment key={index} message={message} />);
 
   // -------------------------
   //  디버깅
@@ -175,7 +177,7 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> 타임라인별 댓글 </div> {Messages}{" "}
+        <div className="chatHeader"> 타임라인별 댓글 </div> {filteredMessages}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
       <div className="floatBottom" onClick={toBottom}>
