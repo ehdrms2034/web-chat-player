@@ -26,7 +26,7 @@ api/ 뒤에 요청 url을 붙이시면 됩니다.
 
 request body
 
-```json
+```
 {
   cookie : id,
   nickname : nickname
@@ -41,9 +41,9 @@ request body
 
 ```json
 {
-  response : "success",
-  message : "유저 성공에 성공했습니다.",
-  data : nickname
+  "response" : "success",
+  "message" : "유저 성공에 성공했습니다.",
+  "data" : "nickname"
 }
 ```
 
@@ -51,9 +51,9 @@ request body
 
 ```json
 {
-  response : "error",
-  message : "유저 생성에 실패했습니다.",
-  data : errorMessage
+  "response" : "error",
+  "message" : "유저 생성에 실패했습니다.",
+  "data" : "errorMessage"
 }
 ```
 
@@ -77,9 +77,9 @@ Request Ex : /user/getNickname?cookie=id
 
 ```json
 {
-  response : "success",
-  message : "성공적으로 nickname을 조회했습니다.",
-  data : nickname
+  "response" : "success",
+  "message" : "성공적으로 nickname을 조회했습니다.",
+  "data" : nickname
 }
 ```
 
@@ -89,9 +89,9 @@ Request Ex : /user/getNickname?cookie=id
 
 ```json
 {
-  response : "error",
-  message : "성공적으로 nickname을 조회했습니다.",
-  data : nickname
+  "response" : "error",
+  "message" : "성공적으로 nickname을 조회했습니다.",
+  "data" : "nickname"
 }
 ```
 
@@ -103,10 +103,10 @@ Request Ex : /user/getNickname?cookie=id
 
 ```json
 {
-  cookie : "uuid",
-  video : "videoId",
-  message : "댓글 내용 들어갈 자리입니다요오오",
-  timeline : 12.32
+  "cookie" : "uuid",
+  "video" : "videoId",
+  "message" : "댓글 내용 들어갈 자리입니다요오오",
+  "timeline" : 12.32
 }
 ```
 
@@ -118,9 +118,9 @@ Request Ex : /user/getNickname?cookie=id
 
 ```json
 {
-  response : "success",
-  message : "성공적으로 댓글을 작성했습니다.",
-  data : null
+  "response" : "success",
+  "message" : "성공적으로 댓글을 작성했습니다.",
+  "data" : null
 }
 ```
 
@@ -130,9 +130,9 @@ Request Ex : /user/getNickname?cookie=id
 
 ```json
 {
-  response : "error",
-  message : "댓글을 작성하는데 실패했습니다.",
-  data : "error Message"
+  "response" : "error",
+  "message" : "댓글을 작성하는데 실패했습니다.",
+  "data" : "error Message"
 }
 ```
 
@@ -158,14 +158,14 @@ Request Ex : /comment/comments?video={videoId}&timeline={시간(sec.ms)}&offset=
 
 ```json
 {
-  response : "success",
-  message : "성공적으로 메시지 리스트를 불러왔습니다.",
-  data : [
+  "response" : "success",
+  "message" : "성공적으로 메시지 리스트를 불러왔습니다.",
+  "data" : [
     {
-      nickname : "닉네임명",
-      timeline : 12.23,
-      message : "저장된 메시지이",
-      createdAt : "yyyy-mm-dd"
+      "nickname" : "닉네임명",
+      "timeline" : 12.23,
+      "message" : "저장된 메시지이",
+      "createdAt" : "yyyy-mm-dd"
     },
     ...
   ]
@@ -178,9 +178,9 @@ Request Ex : /comment/comments?video={videoId}&timeline={시간(sec.ms)}&offset=
 
 ```json
 {
-  response : "error",
-  message : "메시지 리스트를 불러오는데 실패했습니다",
-  data : "error Message"
+  "response" : "error",
+  "message" : "메시지 리스트를 불러오는데 실패했습니다",
+  "data" : "error Message"
 }
 ```
 
