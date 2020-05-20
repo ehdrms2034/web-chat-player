@@ -4,9 +4,10 @@ import io from "socket.io-client";
 import Comment from "./Comment";
 import Input from "./Input";
 import Axios from "axios";
-
+import { Cookies } from "react-cookie";
 import useInterval from "@use-it/interval";
-
+import { Cookie } from "tough-cookie";
+import TmpCookie from "react-cookies";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 30;
 
@@ -14,7 +15,7 @@ let socket;
 
 // 정해진 분량의 댓글을 호출
 const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH) => {
-  const URL = `${COMMENT_BASE_URL}getComments?video=${videoId}&timeline=${startTime}&duration=${startTime + until}`;
+  const URL = `${COMMENT_BASE_URL}comments?video=${videoId}&timeline=${startTime}&offset=${startTime + until}`;
   try {
     const data = await Axios.get(URL).then((res) => res.data);
     if (data.response === "error") throw data;
@@ -34,9 +35,9 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
 //댓글 REST API에 저장
 const _createComments = async (videoId, message, timeline) => {
   console.log("in createComments");
-  const URL = `${COMMENT_BASE_URL}createComment`;
+  const URL = `${COMMENT_BASE_URL}comment`;
   const BODY = {
-    cookie: "",
+    cookie: TmpCookie.load("id"),
     video: videoId,
     message,
     timeline,
@@ -67,7 +68,6 @@ const ChatContainer = ({ _name, _videoId, _timeline }) => {
   const [name, setName] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [messages, setMessages] = useState([]);
-
   const $input = createRef();
   const $commentContainer = useRef();
 
