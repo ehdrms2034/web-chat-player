@@ -77,13 +77,22 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     socket = io(ENDPOINT);
     socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
     socket.emit("join", "video1");
+
+    // -------------------------
+    //  socket으로부터 댓글 받기
+    // -------------------------
+
+    // - 최초 1회 (0초 지점) 처리, "+5" 는 보정치
+    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
+      comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
+      setMessages(comments);
+    });
   }, []);
 
   // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
       console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
-      //socket 서버는 id로, comment 서버는 nickname으로 보내게 되어있어서 통일
       const convertedMsg = {
         nickname: newMessage.id,
         message: newMessage.text,
@@ -92,7 +101,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
       const nextMessages = [...messages, convertedMsg];
 
       nextMessages.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
-      console.log(`INFO (ChatContainer.js) : 현재 보관중인 메시지 목록 : ${JSON.stringify(nextMessages, null, 2)}`);
+      //console.log(`INFO (ChatContainer.js) : 현재 보관중인 메시지 목록 : ${JSON.stringify(nextMessages, null, 2)}`);
       setMessages(nextMessages);
     });
     // 메시지 새로 받을 때마다 스크롤이 맨밑이면 스크롤 최하단으로 이동
@@ -112,19 +121,6 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   };
 
   // -------------------------
-  //  socket으로부터 댓글 받기
-  // -------------------------
-  useEffect(() => {
-    // - 최초 1회 (0초 지점) 처리
-    // TODO : 추후엔 동영상 시작 버튼을 누르는 시점에, 사용자가 설정한 타임라인 부터 가져오는 것으로 변경해야 할 것임.
-    // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서 조금 일찍 & 더 많이 댓글을 받도록 하였습니다.
-    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
-      comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
-      setMessages(comments);
-    });
-  }, []);
-
-  // -------------------------
   //  socket으로 댓글 보내기
   // -------------------------
   const sendMessage = (message) => {
@@ -133,15 +129,20 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
-    socket.emit("newComment", {
-      id: TmpCookie.load("nickname"),
-      message,
-      createdAt: new Date(),
-      timeline: Math.floor(_timeline * 100) / 100,
-      video: "video1",
-    });
+    socket.emit(
+      "newComment",
+      {
+        id: TmpCookie.load("nickname"),
+        message,
+        createdAt: new Date(),
+        timeline: Math.floor(_timeline * 100) / 100,
+        video: "video1",
+      },
+      () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지? @장정윤님
+    );
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
+    // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
   const filteredMessages = messages
