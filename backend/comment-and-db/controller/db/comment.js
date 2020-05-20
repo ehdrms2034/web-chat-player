@@ -8,7 +8,7 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const commentService = new CommentService();
 const userService = new UserService();
 
-router.post("/createComment", async (req, res) => {
+router.post("/comment", async (req, res) => {
   const { cookie, video, message, timeline } = req.body;
   try {
     if (
@@ -18,7 +18,6 @@ router.post("/createComment", async (req, res) => {
       timeline === undefined
     )
       throw new Error("request body가 조회 되지 않습니다");
-    const replacedTime = parseInt(timeline.replaceAll(":", ""));
     const owner = await userService.getUserBycookie(cookie);
     await commentService.createComment(owner, video, message, replacedTime);
     res.send(
@@ -35,17 +34,17 @@ router.post("/createComment", async (req, res) => {
   }
 });
 
-router.get("/getComments", async (req, res) => {
-  const { video, timeline, duration } = req.query;
+router.get("/comments", async (req, res) => {
+  const { video, timeline, offset } = req.query;
   try {
     if (
       video === undefined ||
       timeline === undefined ||
-      duration == undefined
+      offset == undefined
     ) {
       throw new Error("request query가 조회되지 않습니다.");
     }
-    const messageList = await commentService.getCommentsByVideo(
+    const messageList = await commentService.getComments(
       video,
       timeline,
       duration
@@ -66,7 +65,6 @@ router.get("/getComments", async (req, res) => {
       )
     );
   } catch (error) {
-    console.log(error);
     res.send(
       generateResponse(
         "error",
