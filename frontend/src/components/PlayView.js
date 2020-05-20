@@ -8,7 +8,8 @@ function PlayView({ match }) {
   const videoId = match.params.id;
   const [video, setVideos] = React.useState({});
   const METADATA_BASE_URL = "http://27.96.130.172/api/video";
-  const [videoTime, handleTime] = React.useState(0);
+  const [timeline, handleTime] = React.useState(0);
+
   let _player = "";
   React.useEffect(() => {
     axios
@@ -56,7 +57,7 @@ function PlayView({ match }) {
           <div className="PlayDate"> {new Date(video.uploadedAt).toLocaleDateString()} </div>
         </div>
       </section>
-      <ChatContainer _videoId={videoId} />
+      <ChatContainer _timeline={timeline} _videoId={videoId} />
     </div>
   );
 }
