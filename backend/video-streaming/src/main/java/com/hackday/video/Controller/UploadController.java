@@ -5,6 +5,8 @@ import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,49 +24,47 @@ import java.util.UUID;
 
 @RestController
 public class UploadController {
+    private static Logger logger = LoggerFactory.getLogger(UploadController.class);
+
     @Value("video.absolute.location")
     private String videoLocation;
     @Value("${upload.location}")
     private String uploadLocation;
 
+    @Value("${ffmpeg.path}")
+    private String ffmpegPath;
     @PostMapping(value = "/videos/upload")
     public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,
                                       @RequestParam("desc") String desc) {
         String filename = multipartFile.getOriginalFilename();
         File targetFile = new File(uploadLocation+filename);
-        System.out.println("actual path is: " + targetFile.getAbsolutePath());
+        logger.info("actual path is: " + targetFile.getAbsolutePath());
         try {
+            //파일 가져오기
             InputStream fileStream = multipartFile.getInputStream();
             FileUtils.copyInputStreamToFile(fileStream, targetFile);
-
             System.out.println("filename:"+ filename);
             //ConvertService cs = new ConvertService();
+            //ffmpeg hls 변환 후 업로드
             try {
-
-
-
-                String ffmpegBasePath = "/root/ffmpeg/";
-                FFmpeg ffmpeg = new FFmpeg(ffmpegBasePath+"ffmpeg");		// ffmpeg.exe 파일 경로
-                FFprobe ffprobe = new FFprobe(ffmpegBasePath+"ffprobe");	// ffprobe.exe 파일 경로
+                FFmpeg ffmpeg = new FFmpeg(ffmpegPath+"ffmpeg");		// ffmpeg 파일 경로
+                FFprobe ffprobe = new FFprobe(ffmpegPath+"ffprobe");	// ffprobe 파일 경로
                 System.out.println("fmpg: " + ffmpeg);
                 FFmpegBuilder builder = new FFmpegBuilder()
-                        .setInput(targetFile.getAbsolutePath())// output 파일을 덮어쓸 것인지 여부(false일 경우, output path에 해당 파일이 존재할 경우 예외 발생 - File 'C:/Users/Desktop/test.png' already exists. Exiting.)
-                        .addOutput("/root/videos/"+"example.m3u8")
-                        .addExtraArgs("-codec:", "copy")
-                        .addExtraArgs("-start_number", "0")
+                        .setInput(targetFile.getAbsolutePath())
+                        .addOutput(uploadLocation+videoname+".m3u8")
+                        .addExtraArgs("-codec:", "copy") //코덱
+                        .addExtraArgs("-start_number", "0") //0부터시작
                         .addExtraArgs("-hls_list_size", "0")
-                        .addExtraArgs("-hls_time", "10")
+                        .addExtraArgs("-hls_time", "10") //10초정도컷
                         .addExtraArgs("-f", "hls")
                         .done();
-
-
-                FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);		// FFmpeg 명령어 실행을 위한 FFmpegExecutor 객체 생성
+                FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
                 executor.createJob(builder).run();
+
             } catch (Exception e) {
                 System.out.println(e);
             }
-
-
 
         } catch (IOException e) {
             FileUtils.deleteQuietly(targetFile);
