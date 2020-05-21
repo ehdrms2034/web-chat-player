@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5721113-5a22-4cc8-9a18-cac124beb44a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../frontend/src/components/ListView.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/components/ListView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,10 +123,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="67" y="198" width="1281" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590064610118" />
-    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590054430358">
+    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590078337563">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590054430358" />
+    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590078337563" />
     <state x="366" y="432" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1590066885557">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
