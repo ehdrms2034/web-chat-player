@@ -27,10 +27,19 @@ function Header({ nickname, setNickname }) {
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
   }
-
   function closeModal() {
     setIsOpen(false);
   }
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
 
   const $Header = useRef();
   // scroll처리
@@ -88,12 +97,14 @@ function Header({ nickname, setNickname }) {
           <img alt="로고" src={logo} className="logoImg" />
         </Link>
       </div>
-      <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal}>
+      <Modal style={customStyles} isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal}>
+        {/* <button onClick={closeModal}>close</button> */}
         <Upload />
-        <button onClick={closeModal}>close</button>
       </Modal>
       <div className="userInfo">
-        <button onClick={openModal}>업로드하기</button>
+        <button className="sendButton" onClick={openModal}>
+          업로드하기
+        </button>
         <img alt="유저" src={userIcon} className="userImg" />
         {/* 유저 테이블의 닉네임 값 */}
         <div className="nickName center">{nickname}님</div>

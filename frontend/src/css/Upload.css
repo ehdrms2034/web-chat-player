@@ -1,0 +1,16 @@
+#form-desc {
+  height: 100px;
+  width: 400px;
+  margin-top: 10px;
+}
+
+#form-id {
+  height: 40px;
+  width: 400px;
+}
+
+#form-btn {
+  margin-top: 10px;
+  width: 400px;
+  height: 40px;
+}
