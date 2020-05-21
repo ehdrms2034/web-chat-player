@@ -9,7 +9,7 @@ function Upload() {
   const [videoFile, changeVideoFile] = React.useState("");
   const [posterFile, changePosterFile] = React.useState("");
   const [uploadCompleted, handleUploadFlag] = React.useState(false);
-
+  const [isLoading, handleLoading] = React.useState(false);
   const { register, handleSubmit, watch, errors } = useForm();
 
   const videoFileChange = (e) => {
@@ -21,6 +21,7 @@ function Upload() {
   };
 
   const fileUpload = async () => {
+    handleLoading(true);
     const formData = new FormData();
     formData.append("file", videoFile);
     formData.append("poster", posterFile);
@@ -37,6 +38,7 @@ function Upload() {
       });
       if (data.errorCode != 10) throw data;
       handleUploadFlag(true);
+      handleLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -58,8 +60,8 @@ function Upload() {
       <button id="form-btn" className="sendButton" type="submit" onClick={handleSubmit(fileUpload)}>
         Upload
       </button>
-
-      {uploadCompleted && "업로드가 완료되었습니다."}
+      <div>{isLoading && "업로드중입니다..."}</div>
+      <div>{uploadCompleted && "업로드가 완료되었습니다."}</div>
     </React.Fragment>
   );
 }
