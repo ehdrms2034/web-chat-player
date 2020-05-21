@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import "../css/playView.css";
 import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
@@ -10,8 +10,6 @@ function PlayView({ match, nickname }) {
   const METADATA_BASE_URL = "http://27.96.130.172/api/video";
   const [timeline, handleTime] = React.useState(0);
   const [lastPoint, handleLastPoint] = React.useState(0);
-  // 타임라인 클릭(로딩 전이라도 이벤트 발생)
-  const $ChatContainer = useRef();
 
   let _player = "";
   React.useEffect(() => {
@@ -55,13 +53,7 @@ function PlayView({ match, nickname }) {
           playing
           onReady={onPlayerReady}
           controls={true}
-          // onSeek={(e) => {
-          //   handleLastPoint(Number(e));
-          //   console.log("onSeek", Number(e));
-          // }}
-          onPlay={(e) => $ChatContainer.current.resetContainer()}
           onProgress={onProgress}
-          // onBuffer={(e) => handleLastPoint(999999)}
           progressInterval={10}
           width="60vw"
           height="auto"
@@ -71,13 +63,7 @@ function PlayView({ match, nickname }) {
           <div className="PlayDate"> {new Date(video.uploadedAt).toLocaleDateString()} </div>
         </div>
       </section>
-      <ChatContainer
-        ref={$ChatContainer}
-        _timeline={timeline}
-        _videoId={videoId}
-        _lastPoint={lastPoint}
-        nickname={nickname}
-      />
+      <ChatContainer _timeline={timeline} _videoId={videoId} _lastPoint={lastPoint} nickname={nickname} />
     </div>
   );
 }
