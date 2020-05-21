@@ -20,7 +20,7 @@ function Header() {
   const $Header = useRef();
   // scroll처리
   useEffect(() => {
-    window.addEventListener("scroll", function(e) {
+    window.addEventListener("scroll", function (e) {
       let offSet = window.scrollY;
       offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop");
     });
@@ -49,6 +49,7 @@ function Header() {
     if (response.data.response === "success") {
       setCookie("id", uuid4);
       setNickname(response.data.data);
+      console.log(`INFO (Header.js) : 새 쿠키 발행 --> Cookie : ${uuid4} / Nickname : ${response.data.data}`);
     }
   };
 
@@ -61,7 +62,7 @@ function Header() {
     });
     if (response.data.response === "success") {
       setNickname(response.data.data);
-      setCookie("nickname", response.data.data);
+      console.log(`INFO (Header.js) : 기존 쿠키 적용 --> Cookie : ${id} / Nickname : ${response.data.data}`);
     } else await createUser();
   };
 
