@@ -6,8 +6,11 @@ import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
 import TmpCookie from "react-cookies";
+import useInterval from "@use-it/interval";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 999999;
+
+const MESSAGE_ITEM_HEIGHT = 109;
 
 let socket;
 
@@ -64,9 +67,12 @@ const convertTime = (num) => {
 
 const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
   const [messages, setMessages] = useState([]);
+  const [currentMessages, setCurrentMessage] = useState([]);
   const [convertedLastPoint, setConvertedLastPoint] = useState("");
   const $input = createRef();
   const $commentContainer = useRef();
+
+  const [isBottom, setIsBottom] = useState(true);
 
   // -------------------------
   //  socket 연결/관리 & DB로부터 댓글 받아오기
@@ -109,20 +115,33 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
 
       const nextMessages = [...messages, convertedMsg];
       nextMessages.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
-      //console.log(`INFO (ChatContainer.js) : 현재 보관중인 메시지 목록 : ${JSON.stringify(nextMessages, null, 2)}`);
+      // console.log(`INFO (ChatContainer.js) : 현재 보관중인 메시지 목록 : ${JSON.stringify(nextMessages, null, 2)}`);
       setMessages(nextMessages);
     });
     // 메시지 새로 받을 때마다 스크롤이 맨밑이면 스크롤 최하단으로 이동
-    const currentY = $commentContainer.current.scrollHeight - $commentContainer.current.scrollTop;
-    const scrollViewHeight = $commentContainer.current.clientHeight + 100;
-    if (currentY === scrollViewHeight) {
-      $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
-    } else {
-      //console.log("새메시지 도착");
-    }
+    if (isBottom) $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
 
     return () => socket.off("newMessage");
   }, [messages]);
+
+  //스크롤 관련
+  useEffect(() => {
+    $commentContainer.current.onscroll = (e) => {
+      const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
+      if (scrollHeight === clientHeight + scrollTop) setIsBottom(true);
+      else setIsBottom(false);
+    };
+  }, [currentMessages.length]);
+
+  useInterval(() => {
+    const lists = messages
+      .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
+      .map((message, index) => {
+        return { index, message };
+      });
+    setCurrentMessage(lists);
+    if (isBottom) toBottom();
+  }, 100);
 
   const toBottom = () => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
@@ -150,15 +169,14 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
 
   //_lastPoint: 마지막으로 Seek 한 부분, 처음엔 0. 즉 Seek한 시간부터 시작해 영상의 타임라인에 맞춰 렌더
   //이후 전체 댓글 state / 렌더할 것만 담긴 state로 나누는 방향으로 변경될 예정
-  const filteredMessages = messages
-    .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
-    .map((message, index) => <Comment key={index} message={message} onConvert={convertTime} />);
 
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>{" "}
-        {filteredMessages}{" "}
+        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
+        {currentMessages.map((it, index) => (
+          <Comment key={index} message={it.message} onConvert={convertTime} />
+        ))}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
       <div className="floatBottom" onClick={toBottom}>
