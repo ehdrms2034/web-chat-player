@@ -82,7 +82,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     // 소켓은 최초 1회만 연결
     socket = io(ENDPOINT);
     socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
-    socket.emit("join", videoId);
+    socket.emit("join", _videoId);
 
     // 처음(0초) 한번만 DB로부터 댓글 받아오기
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
@@ -142,7 +142,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
       message,
       createdAt: new Date(),
       timeline: Math.floor(_timeline * 100) / 100,
-      video: videoId,
+      video: _videoId,
     });
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
