@@ -5,7 +5,6 @@ import Comment from "./Comment";
 import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
-import TmpCookie from "react-cookies";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 999999;
 
@@ -31,10 +30,10 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
 };
 
 //댓글 REST API에 저장
-const _createComments = async (videoId, message, timeline) => {
+const _createComments = async (videoId, message, timeline, nickname) => {
   const URL = `${COMMENT_BASE_URL}comment`;
   const BODY = {
-    cookie: TmpCookie.load("id"),
+    cookie: nickname,
     video: videoId,
     message,
     timeline,
@@ -101,6 +100,8 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
 
       //작성자명이 Comment Server의 Socket Controller는 id, DB Controller는 nickname인 문제
       //Comment.js로 통일해서 사용하기 위함
+      console.log(newMessage);
+
       const convertedMsg = {
         nickname: newMessage.id,
         message: newMessage.text,
@@ -136,7 +137,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     const blank_pattern = /^\s+|\s+$/g;
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     //console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
-    _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
+    _createComments(_videoId, message, Math.floor(_timeline * 100) / 100, nickname);
     socket.emit("newComment", {
       id: nickname,
       message,
