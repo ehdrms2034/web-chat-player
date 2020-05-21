@@ -155,8 +155,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
         createdAt: new Date(),
         timeline: Math.floor(_timeline * 100) / 100,
         video: "video1",
-      },
-      () => {} // QUESTION: 이 콜백은 무슨 역할을 하는 것인지? @장정윤님
+      }
     );
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
