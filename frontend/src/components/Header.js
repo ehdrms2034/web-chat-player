@@ -49,6 +49,7 @@ function Header() {
     if (response.data.response === "success") {
       setCookie("id", uuid4);
       setNickname(response.data.data);
+      setCookie("nickname",response.data.data);
     }
   };
 
