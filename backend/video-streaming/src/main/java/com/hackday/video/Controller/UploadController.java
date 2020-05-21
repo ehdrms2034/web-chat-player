@@ -8,6 +8,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,12 +44,13 @@ public class UploadController {
         String postername= posterMultipartFile.getOriginalFilename();
         System.out.println("filename:"+ filename);
         File targetFile = new File(uploadLocation+filename);
-        RestTemplate restTemplate = new RestTemplate();
+
+
 
         String[] parsed = postername.split("\\.");
         String extension = parsed[parsed.length-1];
-
-        File posterFile = new File(uploadLocation+videoname+"-poster."+extension);
+        String posterName = videoname+"-poster."+extension;
+        File posterFile = new File(uploadLocation+ posterName);
         logger.info("actual path of video is: " + targetFile.getAbsolutePath());
         logger.info("actual path of poster is: " + posterFile.getAbsolutePath());
         try {
@@ -84,9 +87,21 @@ public class UploadController {
             FileUtils.deleteQuietly(targetFile);
             e.printStackTrace();
         }
+        final String videoServerUrl="http://49.50.162.195:8080/videos/";
 
+        //메타 서버에 보내기
+        final String postUri = "http://27.96.130.172/api/video/video";
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> info= new HashMap<>();
+        info.put("name", videoname);
+        info.put("summary", desc);
+        info.put("posterUrl", videoServerUrl+videoname+".m3u8");
+        info.put("videoUrl", videoServerUrl+posterName);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(info);
         Map<String, Object> m = new HashMap<>();
         m.put("errorCode", 10);
+        ResponseEntity<Object> response = restTemplate.postForEntity(postUri, request, Object.class);
+        System.out.println(response);
         return m;
     }
 }
