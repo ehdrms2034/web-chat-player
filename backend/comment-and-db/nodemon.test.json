@@ -1,0 +1,6 @@
+{
+    "watch": ["./test"],
+    "ext": "spec.js",
+    "exec": "jasmine-node ./test/db.spec.js"
+  }
+  
