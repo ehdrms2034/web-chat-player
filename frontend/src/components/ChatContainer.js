@@ -135,7 +135,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
 
   useInterval(() => {
     const lists = messages
-      .filter((message) => message.timeline <= _timeline)
+      .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
       .map((message, index) => {
         return { index, message };
       });
