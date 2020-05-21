@@ -50,6 +50,7 @@ function PlayView({ match }) {
           controls={true}
           onSeek={(e) => handleLastPoint(Number(e))}
           onProgress={onProgress}
+          progressInterval={10}
           width="60vw"
           height="auto"
         />
