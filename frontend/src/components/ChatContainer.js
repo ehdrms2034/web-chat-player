@@ -62,7 +62,7 @@ const convertTime = (num) => {
   return new Date(num * 1000).toISOString().substr(11, 8);
 };
 
-const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
+const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   const [messages, setMessages] = useState([]);
   const [convertedLastPoint, setConvertedLastPoint] = useState("");
   const $input = createRef();
@@ -138,7 +138,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     //console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
     socket.emit("newComment", {
-      id: TmpCookie.load("nickname"),
+      id: nickname,
       message,
       createdAt: new Date(),
       timeline: Math.floor(_timeline * 100) / 100,
