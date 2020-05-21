@@ -131,21 +131,23 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }, ref) => {
 
   //스크롤 관련
   useEffect(() => {
+    if (isBottom) toBottom();
     $commentContainer.current.onscroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
+      console.log(scrollHeight, scrollTop, clientHeight);
       if (scrollHeight === clientHeight + scrollTop) setIsBottom(true);
       else setIsBottom(false);
     };
   }, [currentMessages.length]);
 
   useEffect(() => {
+    console.log(isBottom);
     const lists = messages
       .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
       .map((message, index) => {
         return { index, message };
       });
     setCurrentMessage(lists);
-    if (isBottom) toBottom();
   }, [_timeline, messages]);
 
   const toBottom = () => {

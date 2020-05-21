@@ -36,7 +36,6 @@ function PlayView({ match, nickname }) {
     _player = player;
   };
   const onProgress = (p) => {
-    console.log(Math.abs(timeline - p.playedSeconds));
     if (Math.abs(timeline - p.playedSeconds) > 1) {
       handleLastPoint(p.playedSeconds);
     }
