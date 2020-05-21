@@ -160,7 +160,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100, nickname);
     socket.emit("newComment", {
-      id: currentId,
+      id: nickname,
       message,
       createdAt: new Date(),
       timeline: Math.floor(_timeline * 100) / 100,
@@ -169,7 +169,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     console.log(
       `INFO (ChatContainer.js) : 새 메시지 발송 : ${JSON.stringify(
         {
-          id: currentId,
+          id: nickname,
           message,
           createdAt: new Date(),
           timeline: Math.floor(_timeline * 100) / 100,
