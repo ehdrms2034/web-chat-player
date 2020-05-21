@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -34,22 +36,26 @@ public class UploadController {
     @Value("${ffmpeg.path}")
     private String ffmpegPath;
     @PostMapping(value = "/videos/upload")
-    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,@RequestParam("poster") MultipartFile posterFile,
+    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,@RequestParam("poster") MultipartFile posterMultipartFile,
                                       @RequestParam("desc") String desc) {
         String filename = multipartFile.getOriginalFilename();
+        String postername= posterMultipartFile.getOriginalFilename();
         System.out.println("filename:"+ filename);
         File targetFile = new File(uploadLocation+filename);
+        RestTemplate restTemplate = new RestTemplate();
 
-        System.out.println(filename.split("."));
-        File poster = new File(uploadLocation+videoname+"-poster");
+        String[] parsed = postername.split("\\.");
+        String extension = parsed[parsed.length-1];
+
+        File posterFile = new File(uploadLocation+videoname+"-poster."+extension);
         logger.info("actual path of video is: " + targetFile.getAbsolutePath());
-        logger.info("actual path of poster is: " + poster.getAbsolutePath());
+        logger.info("actual path of poster is: " + posterFile.getAbsolutePath());
         try {
             //파일 가져오기
             InputStream fileStream = multipartFile.getInputStream();
-            InputStream posterStream = posterFile.getInputStream();
+            InputStream posterStream = posterMultipartFile.getInputStream();
             FileUtils.copyInputStreamToFile(fileStream, targetFile);
-            FileUtils.copyInputStreamToFile(posterStream, poster);
+            FileUtils.copyInputStreamToFile(posterStream, posterFile);
 
             //ConvertService cs = new ConvertService();
             //ffmpeg hls 변환 후 업로드
@@ -66,7 +72,8 @@ public class UploadController {
                         .addExtraArgs("-hls_time", "10") //10초정도컷
                         .addExtraArgs("-f", "hls")
                         .done();
-
+                FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
+                executor.createJob(builder).run();
 
             } catch (Exception e) {
                 System.out.println(e);
