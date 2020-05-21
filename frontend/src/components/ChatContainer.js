@@ -101,6 +101,8 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
 
       //작성자명이 Comment Server의 Socket Controller는 id, DB Controller는 nickname인 문제
       //Comment.js로 통일해서 사용하기 위함
+      console.log(newMessage);
+
       const convertedMsg = {
         nickname: newMessage.id,
         message: newMessage.text,
