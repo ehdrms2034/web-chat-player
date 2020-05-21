@@ -6,6 +6,7 @@ import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
 import TmpCookie from "react-cookies";
+import useInterval from "@use-it/interval";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 999999;
 
@@ -134,7 +135,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
 
   useInterval(() => {
     const lists = messages
-      .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
+      .filter((message) => message.timeline <= _timeline)
       .map((message, index) => {
         return { index, message };
       });
@@ -166,24 +167,15 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     $input.current.focus();
   };
 
-
-  return (
-    <div className="ChatContainer">
-      <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> 타임라인별 댓글 </div>
-        
   //_lastPoint: 마지막으로 Seek 한 부분, 처음엔 0. 즉 Seek한 시간부터 시작해 영상의 타임라인에 맞춰 렌더
   //이후 전체 댓글 state / 렌더할 것만 담긴 state로 나누는 방향으로 변경될 예정
-  const filteredMessages = messages
-    .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
-    .map((message, index) => <Comment key={index} message={message} onConvert={convertTime} />);
 
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>{" "}
+        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
         {currentMessages.map((it, index) => (
-            <Comment key={index} message={it.message} />
+          <Comment key={index} message={it.message} onConvert={convertTime} />
         ))}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
