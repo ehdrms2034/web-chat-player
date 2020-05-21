@@ -69,7 +69,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
   const $commentContainer = useRef();
 
   // -------------------------
-  //  socket 연결/관리
+  //  socket 연결/관리 & DB로부터 댓글 받아오기
   // -------------------------
   const ENDPOINT = "ws://49.50.173.151:3000";
 
@@ -84,13 +84,16 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
     socket.emit("join", "video1");
 
-    // - 최초 1회 (0초 지점) 전체 댓글 가져오기
+    // 처음(0초) 한번만 DB로부터 댓글 받아오기
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
     });
   }, []);
 
+  // -------------------------
+  //  socket으로부터 댓글 받기
+  // -------------------------
   // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
@@ -134,13 +137,16 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     //console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
-    socket.emit("newComment", {
-      id: TmpCookie.load("nickname"),
-      message,
-      createdAt: new Date(),
-      timeline: Math.floor(_timeline * 100) / 100,
-      video: "video1",
-    });
+    socket.emit(
+      "newComment",
+      {
+        id: TmpCookie.load("nickname"),
+        message,
+        createdAt: new Date(),
+        timeline: Math.floor(_timeline * 100) / 100,
+        video: "video1",
+      }
+    );
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
   };
