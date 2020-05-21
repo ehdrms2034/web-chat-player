@@ -1,6 +1,7 @@
 package com.hackday.video.Controller;
 
 import com.hackday.video.Service.UploadUtils;
+import com.hackday.video.VideoInfo;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
@@ -35,77 +36,39 @@ public class UploadController {
     @Value("${upload.location}")
     private String uploadLocation;
 
-    //비디오 서버
-    final String videoServerUrl="http://49.50.162.195:8080/videos/";
-    //메타 서버
-    final String postUri = "http://27.96.130.172/api/video/video";
 
     //ffmpeg util 클래스 ffmpeg path때문에 autowired
     @Autowired
-    UploadUtils util;
+    private UploadUtils util;
 
 
     @PostMapping(value = "/videos/upload")
-    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,@RequestParam("poster") MultipartFile posterMultipartFile,
+    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile videoMultipartFile,@RequestParam("poster") MultipartFile posterMultipartFile,
                                       @RequestParam("desc") String desc) {
         Map<String, Object> ret = new HashMap<>();
-        String filename = multipartFile.getOriginalFilename();
-        logger.info("requested filename: "+ filename);
-        File videoFile = new File(uploadLocation+filename);
-        String[] parsed = posterMultipartFile.getOriginalFilename().split("\\.");
 
-        //사진파일은 확장자 따로 붙여주기
-        String extension = parsed[parsed.length-1];
-        String posterName = videoname+"-poster."+extension;
-
-        File posterFile = new File(uploadLocation+ posterName);
-
-        //origin 저장한 뒤 변환하고 삭제(todo!!)
-        String originVideoPath = videoFile.getAbsolutePath();
-        String convertedVideoPath = uploadLocation+videoname+".m3u8";
+        VideoInfo vi = util.getParsedVideoInfo(videoname, videoMultipartFile, posterMultipartFile);
+        logger.info("got video: " + vi);
+        //파일 객체 정의
+        File videoFile = new File(vi.getOriginalVideoPath() );
+        File posterFile = new File(vi.getPosterPath());
 
         try {
-            //파일 가져오기
-            InputStream fileStream = multipartFile.getInputStream();
-            InputStream posterStream = posterMultipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, videoFile);
-            FileUtils.copyInputStreamToFile(posterStream, posterFile);
-        } catch (IOException e) {
+            //파일 생성: POST 받은 파일의 인풋스트림을 정의해둔 객체에 쓰기
+            FileUtils.copyInputStreamToFile(videoMultipartFile.getInputStream(), videoFile);
+            FileUtils.copyInputStreamToFile(posterMultipartFile.getInputStream(), posterFile);
+
+            //FFmpeg 변환
+            util.convertToHls(vi.getOriginalVideoPath(), vi.getConvertedVideoPath());
+            //메타 서버에 POST 요청
+            util.sendRequsetToMetaServer(videoname, desc, vi.getVideoServerUrl(), vi.getPosterPath());
+        } catch (Exception e) {
             //실패시 롤백
             util.rollBack(videoFile, posterFile);
             e.printStackTrace();
-            ret.put("errorcode", 11);
-            ret.put("message", "업로드 실패: 파일 저장에 실패했습니다.");
-            return ret;
-        }
-
-        try {
-            //FFmpeg 변환
-            util.convertToHls(originVideoPath, convertedVideoPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            util.rollBack(videoFile, posterFile);
             ret.put("errorcode", 12);
-            ret.put("message", "업로드 실패: 파일 변환해 실패했습니다.");
+            ret.put("message", "업로드 실패");
             return ret;
-        }
-
-        RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> info= new HashMap<>();
-        info.put("name", videoname);
-        info.put("summary", desc);
-        info.put("videoUrl", videoServerUrl+videoname+".m3u8");
-        info.put("posterUrl", videoServerUrl+posterName);
-
-        try {
-            //메타 데이터 서버에 요청
-            HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(info);
-            ResponseEntity<Object> response = restTemplate.postForEntity(postUri, request, Object.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            util.rollBack(videoFile, posterFile);
-            ret.put("errorcode", 13);
-            ret.put("message", "업로드 실패: 메타 서버에 전송을 실패했습니다.");
         }
 
         ret.put("errorCode", 10);
