@@ -46,7 +46,7 @@ function Header({ nickname, setNickname }) {
       nickname: uniqueNamesGenerator(customConfig),
     });
     if (response.data.response === "success") {
-      setCookie("id", uuid4);
+      setCookie("id", uuid4, { path: "/" });
       setNickname(response.data.data);
       console.log(`INFO (Header.js) : 새 쿠키 발행 --> Cookie : ${uuid4} / Nickname : ${response.data.data}`);
     }
