@@ -95,8 +95,8 @@ public class UploadController {
         Map<String, Object> info= new HashMap<>();
         info.put("name", videoname);
         info.put("summary", desc);
-        info.put("posterUrl", videoServerUrl+videoname+".m3u8");
-        info.put("videoUrl", videoServerUrl+posterName);
+        info.put("videoUrl", videoServerUrl+videoname+".m3u8");
+        info.put("posterUrl", videoServerUrl+posterName);
         HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(info);
         Map<String, Object> m = new HashMap<>();
         m.put("errorCode", 10);
