@@ -20,8 +20,8 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
     return data.data;
   } catch (error) {
     const errComment = {
-      id: "관리자",
-      text: `현재 댓글 서버가 원활하지 않습니다. ${JSON.stringify(error)}`,
+      nickname: "관리자",
+      message: `현재 댓글 서버가 원활하지 않습니다. ${JSON.stringify(error)}`,
       createdAt: new Date().toISOString(),
       timeline: 0.0,
       video: videoId,
@@ -48,8 +48,8 @@ const _createComments = async (videoId, message, timeline) => {
   } catch (error) {
     console.log(error);
     const errComment = {
-      id: "관리자",
-      text: `현재 댓글 서버가 원활하지 않습니다. ${JSON.stringify(error)}`,
+      nickname: "관리자",
+      message: `현재 댓글 서버가 원활하지 않습니다. ${JSON.stringify(error)}`,
       createdAt: new Date().toISOString(),
       timeline: 0.0,
       video: videoId,
@@ -137,16 +137,13 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint }) => {
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
     //console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100);
-    socket.emit(
-      "newComment",
-      {
-        id: TmpCookie.load("nickname"),
-        message,
-        createdAt: new Date(),
-        timeline: Math.floor(_timeline * 100) / 100,
-        video: "video1",
-      }
-    );
+    socket.emit("newComment", {
+      id: TmpCookie.load("nickname"),
+      message,
+      createdAt: new Date(),
+      timeline: Math.floor(_timeline * 100) / 100,
+      video: "video1",
+    });
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
   };
