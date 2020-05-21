@@ -74,7 +74,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   const $commentContainer = useRef();
 
   // -------------------------
-  //  socket 연결/관리
+  //  socket 연결/관리 & DB로부터 댓글 받아오기
   // -------------------------
   const ENDPOINT = "ws://49.50.173.151:3000";
   // 소켓은 최초 1회만 연결
@@ -84,6 +84,9 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     socket.emit("join", "video1");
   }, []);
 
+  // -------------------------
+  //  socket으로부터 댓글 받기
+  // -------------------------
   // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
@@ -116,27 +119,12 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
   };
 
-  // -------------------------
-  //  socket으로부터 댓글 받기
-  // -------------------------
   useEffect(() => {
-    // - 최초 1회 (0초 지점) 처리
-    // TODO : 추후엔 동영상 시작 버튼을 누르는 시점에, 사용자가 설정한 타임라인 부터 가져오는 것으로 변경해야 할 것임.
-    // - "+5" 는 약간의 보정치입니다. 콜을 보내고 받는 시간 사이에 댓글이 누락되는 구간이 있을 것 같아서 조금 일찍 & 더 많이 댓글을 받도록 하였습니다.
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
     });
   }, []);
-  /*
-  useInterval(() => {
-    // - 30초, 60초, 90초, ... 를 지날때마다 30초만큼의 댓글을 호출함 (${COMMENT_SLICE_LENGTH}만큼의 시간이 지날때마다 call)
-    // TODO : 받아온 댓글은 중복이 없도록 필터링해야 합니다. 즉 겹치는 부분은 버려야 합니다.
-    _getComments(_videoId, Math.floor(_timeline * 100) / 100, COMMENT_SLICE_LENGTH + 5).then((comments) =>
-      setMessages([...messages, comments])
-    );
-  }, COMMENT_SLICE_LENGTH * 1000);
-*/
 
   // -------------------------
   //  socket으로 댓글 보내기
@@ -159,23 +147,12 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     );
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
-    // TODO : DB에도 데이터 쏴줘야됨. (w/Axios)
   };
 
   const filteredMessages = messages
     .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
     .map((message, index) => <Comment key={index} message={message} />);
 
-  // -------------------------
-  //  디버깅
-  // -------------------------
-  /*
-  const [timeline, setTimeline] = useState(0); // TODO: <-- 동영상 플레이어에서 전달받기 (임시 state임)
-  // TODO : 비디오에서 가져오는 걸로 바꾸어야 함. 이건 단지 동영상 흘러가는 느낌을 주는 타임라인일 뿐.
-  useInterval(() => {
-    setTimeline(timeline + 0.01); // 0.01초씩 흘러가는 상황 시뮬레이션
-  }, 10);
-*/
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
