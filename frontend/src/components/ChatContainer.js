@@ -82,6 +82,12 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     socket = io(ENDPOINT);
     socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
     socket.emit("join", "video1");
+
+    // 처음(0초) 한번만 DB로부터 댓글 받아오기
+    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
+      comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
+      setMessages(comments);
+    });
   }, []);
 
   // -------------------------
@@ -118,13 +124,6 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   const toBottom = () => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
   };
-
-  useEffect(() => {
-    _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
-      comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
-      setMessages(comments);
-    });
-  }, []);
 
   // -------------------------
   //  socket으로 댓글 보내기
