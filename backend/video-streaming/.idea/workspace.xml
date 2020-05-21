@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5721113-5a22-4cc8-9a18-cac124beb44a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/components/ListView.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/components/ListView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

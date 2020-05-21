@@ -1,12 +1,18 @@
 package com.hackday.video.Service;
 
+import ch.qos.logback.core.util.FileUtil;
+import com.hackday.video.Controller.UploadController;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -15,6 +21,8 @@ public class UploadUtils {
 
     @Value("${ffmpeg.path}")
     private String ffmpegPath;
+
+    private static Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     public void convertToHls(String inputPath, String outputPath) throws IOException {
         FFmpeg ffmpeg = new FFmpeg(ffmpegPath+"ffmpeg");		// ffmpeg 파일 경로
@@ -35,5 +43,10 @@ public class UploadUtils {
         executor.createJob(builder).run();
     }
 
+    public void rollBack(File videoFile, File posterFile) {
+        FileUtils.deleteQuietly(videoFile);
+        FileUtils.deleteQuietly(posterFile);
+        logger.info("failed to upload: deleted Files");
+    }
 }
 

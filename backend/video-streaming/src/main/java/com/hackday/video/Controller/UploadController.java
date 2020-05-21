@@ -51,7 +51,7 @@ public class UploadController {
         Map<String, Object> ret = new HashMap<>();
         String filename = multipartFile.getOriginalFilename();
         logger.info("requested filename: "+ filename);
-        File targetFile = new File(uploadLocation+filename);
+        File videoFile = new File(uploadLocation+filename);
         String[] parsed = posterMultipartFile.getOriginalFilename().split("\\.");
 
         //사진파일은 확장자 따로 붙여주기
@@ -61,18 +61,18 @@ public class UploadController {
         File posterFile = new File(uploadLocation+ posterName);
 
         //origin 저장한 뒤 변환하고 삭제(todo!!)
-        String originVideoPath = targetFile.getAbsolutePath();
+        String originVideoPath = videoFile.getAbsolutePath();
         String convertedVideoPath = uploadLocation+videoname+".m3u8";
 
         try {
             //파일 가져오기
             InputStream fileStream = multipartFile.getInputStream();
             InputStream posterStream = posterMultipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+            FileUtils.copyInputStreamToFile(fileStream, videoFile);
             FileUtils.copyInputStreamToFile(posterStream, posterFile);
         } catch (IOException e) {
             //실패시 롤백
-            FileUtils.deleteQuietly(targetFile);
+            util.rollBack(videoFile, posterFile);
             e.printStackTrace();
             ret.put("errorcode", 11);
             ret.put("message", "업로드 실패: 파일 저장에 실패했습니다.");
@@ -80,16 +80,14 @@ public class UploadController {
         }
 
         try {
-
             //FFmpeg 변환
             util.convertToHls(originVideoPath, convertedVideoPath);
         } catch (Exception e) {
             e.printStackTrace();
-
+            util.rollBack(videoFile, posterFile);
             ret.put("errorcode", 12);
             ret.put("message", "업로드 실패: 파일 변환해 실패했습니다.");
             return ret;
-
         }
 
         RestTemplate restTemplate = new RestTemplate();
@@ -105,6 +103,7 @@ public class UploadController {
             ResponseEntity<Object> response = restTemplate.postForEntity(postUri, request, Object.class);
         } catch (Exception e) {
             e.printStackTrace();
+            util.rollBack(videoFile, posterFile);
             ret.put("errorcode", 13);
             ret.put("message", "업로드 실패: 메타 서버에 전송을 실패했습니다.");
         }
