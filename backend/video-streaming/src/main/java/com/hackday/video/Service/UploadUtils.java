@@ -1,6 +1,5 @@
 package com.hackday.video.Service;
 
-import ch.qos.logback.core.util.FileUtil;
 import com.hackday.video.Controller.UploadController;
 import com.hackday.video.VideoInfo;
 import net.bramp.ffmpeg.FFmpeg;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
