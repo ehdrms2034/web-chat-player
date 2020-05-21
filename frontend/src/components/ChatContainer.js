@@ -6,7 +6,6 @@ import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
 import useInterval from "@use-it/interval";
-import {useRefsCollection} from 'react-refs-collection';
 
 import TmpCookie from "react-cookies";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
@@ -71,9 +70,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   const [name, setName] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [messages, setMessages] = useState([]);
-  const {getRefHandler, getRef} = useRefsCollection();
   const [currentMessages, setCurrentMessage] = useState([]);
-  const [component,setComponent] = useState();
   const $input = createRef();
   const $commentContainer = useRef();
 
@@ -107,11 +104,7 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
       setMessages(nextMessages);
     });
     // 메시지 새로 받을 때마다 스크롤이 맨밑이면 스크롤 최하단으로 이동
-    if (isBottom) {
-      $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
-    }else{
-      
-    }
+    if (isBottom) $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
 
     return () => socket.off("newMessage");
   }, [messages]);
@@ -120,10 +113,10 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
   useEffect(() => {
     $commentContainer.current.onscroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
-      if (scrollHeight <= clientHeight + scrollTop + MESSAGE_ITEM_HEIGHT) setIsBottom(true);
+      if (scrollHeight === clientHeight + scrollTop) setIsBottom(true);
       else setIsBottom(false);
     };
-  }, []);
+  }, [currentMessages.length]);
 
   useInterval(() => {
     const lists = messages
@@ -134,33 +127,6 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     setCurrentMessage(lists);
     if (isBottom) toBottom();
   }, 100);
-
-
-  // 현재 작업중인 이전 메시지 날라올 때 추적 부분 (현재 스크롤에서 맨 위의 div가 어떤건지 알아내기 까지 작업되어있음)
-  useEffect(()=>{
-    let data = null;
-    let num = 9999999;
-    console.log($commentContainer.current.scrollTop);
-    for(let index=0; index<currentMessages.length; index++)
-        if(data === null) data = getRef(index);
-        else{
-          if(num>Math.abs(getRef(index).offsetTop - $commentContainer.current.scrollTop)){
-            num = Math.abs(getRef(index).offsetTop - $commentContainer.current.scrollTop)
-            data = getRef(index);
-          }
-        }
-        if(isBottom === false && component !== data&&data!==null) {
-          // $commentContainer.current.scrollTo(0,component.offsetTop);
-        }else{
-          setComponent(data);
-        }
-
-    console.log(component);
-  },[currentMessages.length]);
-
-  // useEffect(()=>{
-  //   console.log()
-  // },[currentMessages]);
 
   const toBottom = () => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
@@ -227,10 +193,8 @@ const ChatContainer = ({ _name, _videoId, _timeline, _lastPoint }) => {
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
         <div className="chatHeader"> 타임라인별 댓글 </div>
-        {currentMessages.map((it,index) => (
-          <div name={it.message.message} key={it.index} ref={getRefHandler(index)}>
+        {currentMessages.map((it, index) => (
             <Comment message={it.message} />
-          </div>
         ))}{" "}
       </div>{" "}
       <Input ref={$input} sendMessage={sendMessage} />{" "}
