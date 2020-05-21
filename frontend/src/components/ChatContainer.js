@@ -67,7 +67,7 @@ const convertTime = (num) => {
   return new Date(num * 1000).toISOString().substr(11, 8);
 };
 
-const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }, ref) => {
+const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   const [currentId] = useState(TmpCookie.load("id"));
   const [messages, setMessages] = useState([]);
   const [currentMessages, setCurrentMessage] = useState([]);
@@ -148,6 +148,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }, ref) => {
         return { index, message };
       });
     setCurrentMessage(lists);
+    if (isBottom) toBottom();
   }, [_timeline, messages]);
 
   const toBottom = () => {
