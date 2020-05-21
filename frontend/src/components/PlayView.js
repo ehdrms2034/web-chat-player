@@ -4,7 +4,7 @@ import ChatContainer from "./ChatContainer.js";
 import axios from "axios";
 import ReactPlayer from "react-player";
 
-function PlayView({ match }) {
+function PlayView({ match, nickname }) {
   const videoId = match.params.id;
   const [video, setVideos] = React.useState({});
   const METADATA_BASE_URL = "http://27.96.130.172/api/video";
@@ -59,7 +59,7 @@ function PlayView({ match }) {
           <div className="PlayDate"> {new Date(video.uploadedAt).toLocaleDateString()} </div>
         </div>
       </section>
-      <ChatContainer _timeline={timeline} _videoId={videoId} _lastPoint={lastPoint} />
+      <ChatContainer _timeline={timeline} _videoId={videoId} _lastPoint={lastPoint} nickname={nickname} />
     </div>
   );
 }

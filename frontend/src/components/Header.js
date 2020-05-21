@@ -16,7 +16,7 @@ const customConfig = {
   length: 2,
 };
 
-function Header() {
+function Header({ nickname, setNickname }) {
   const $Header = useRef();
   // scroll처리
   useEffect(() => {
@@ -30,7 +30,6 @@ function Header() {
   }, []);
 
   const [cookie, setCookie] = useCookies(["cookie"]);
-  const [nickname, setNickname] = useState("닉네임");
 
   useEffect(() => {
     async function init() {
