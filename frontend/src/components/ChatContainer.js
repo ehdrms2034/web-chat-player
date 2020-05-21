@@ -1,4 +1,4 @@
-import React, { useRef, createRef, useEffect, useState } from "react";
+import React, { useImperativeHandle, forwardRef, useRef, createRef, useEffect, useState } from "react";
 import "../css/playView.css";
 import io from "socket.io-client";
 import Comment from "./Comment";
@@ -67,7 +67,7 @@ const convertTime = (num) => {
   return new Date(num * 1000).toISOString().substr(11, 8);
 };
 
-const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
+const ChatContainer = forwardRef(({ _videoId, _timeline, _lastPoint, nickname }, ref) => {
   const [currentId] = useState(TmpCookie.load("id"));
   const [messages, setMessages] = useState([]);
   const [currentMessages, setCurrentMessage] = useState([]);
@@ -97,6 +97,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
+      console.log(comments);
     });
   }, []);
 
@@ -137,7 +138,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     };
   }, [currentMessages.length]);
 
-  useInterval(() => {
+  useEffect(() => {
     const lists = messages
       .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
       .map((message, index) => {
@@ -145,7 +146,17 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
       });
     setCurrentMessage(lists);
     if (isBottom) toBottom();
-  }, 100);
+  }, [_timeline, messages]);
+
+  // useInterval(() => {
+  //   const lists = messages
+  //     .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
+  //     .map((message, index) => {
+  //       return { index, message };
+  //     });
+  //   setCurrentMessage(lists);
+  //   if (isBottom) toBottom();
+  // }, 100);
 
   const toBottom = () => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
@@ -184,6 +195,14 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     $input.current.focus();
   };
 
+  // 반짝임 현상 방지용
+  useImperativeHandle(ref, () => ({
+    resetContainer() {
+      console.log("hi");
+      // setCurrentMessage([]);
+    },
+  }));
+
   //_lastPoint: 마지막으로 Seek 한 부분, 처음엔 0. 즉 Seek한 시간부터 시작해 영상의 타임라인에 맞춰 렌더
   //이후 전체 댓글 state / 렌더할 것만 담긴 state로 나누는 방향으로 변경될 예정
 
@@ -193,14 +212,14 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
         <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
         {currentMessages.map((it, index) => (
           <Comment key={index} message={it.message} onConvert={convertTime} />
-        ))}{" "}
-      </div>{" "}
-      <Input ref={$input} sendMessage={sendMessage} />{" "}
+        ))}
+      </div>
+      <Input ref={$input} sendMessage={sendMessage} />
       <div className="floatBottom" onClick={toBottom}>
         <img className="arrowImg" src={arrow} />
       </div>
     </div>
   );
-};
+});
 
 export default ChatContainer;
