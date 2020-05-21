@@ -1,18 +1,18 @@
+
 name: Front-Build-To-Server2
 
 on:
   push:
+
     branches: [feature/front]
 
 jobs:
   deploy:
     name: Build, Deploy to S3 bucket
     runs-on: [ubuntu-latest]
-
     strategy:
       matrix:
         node-version: [12.16.x]
-
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2

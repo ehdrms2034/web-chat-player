@@ -1,0 +1,27 @@
+{
+  "name": "db-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "test:db": "jasmine-node ./test/db.spec.js",
+    "test:db:dev": "nodemon --config nodemon.test.json",
+    "test:socket": "jasmine-node ./test/socket.spec.js",
+    "start:dev": "nodemon",
+    "deploy": "pm2 start ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jasmine-node": "^3.0.0",
+    "moment": "^2.25.3",
+    "mongoose": "^5.9.14",
+    "morgan": "~1.9.1",
+    "socket.io": "^2.3.0"
+  }
+}
