@@ -2,10 +2,10 @@
 
 ## 컴포넌트 구조
 
-- 트렐로 그림 참조
-
 * index > App > header + listView / PlayView
 * listView > MovieCard
+* PlayView > (player+info) + ChatContainer
+* ChatContainer > Comment
 
 ## 디렉토리
 
