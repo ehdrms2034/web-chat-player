@@ -1,0 +1,65 @@
+.ListView {
+  color: white;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.videoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.MovieCard {
+  display: flex;
+  background-color: rgba(34, 34, 41, 0.267);
+  border-radius: 4px;
+  width: 45vw;
+  box-sizing: border-box;
+  margin: 10px 20px 20px 0;
+  height: 250px;
+  box-shadow: 2px 2px #42424248;
+  transition: 0.3s;
+  opacity: 0.75;
+  max-width: 500px;
+}
+
+.MovieCard:hover {
+  opacity: 1;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.MovieInfo {
+  font-size: 15;
+  box-sizing: border-box;
+  padding: 20px;
+  position: relative;
+  min-width: 200px;
+  width: 100%;
+}
+
+.MovieDate {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 0.8rem;
+}
+
+.MoviePoster {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.MovieSummary {
+  line-height: 150%;
+  font-size: 1rem;
+}
+
+.MovieTitle {
+  font-size: 1.2rem;
+}

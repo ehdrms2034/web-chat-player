@@ -1,20 +1,18 @@
-# This is a basic workflow to help you get started with Actions
 
 name: Front-Build-To-Server2
 
 on:
   push:
-    branches: [ feature/front ]
-    
+
+    branches: [feature/front]
+
 jobs:
   deploy:
     name: Build, Deploy to S3 bucket
     runs-on: [ubuntu-latest]
-
     strategy:
       matrix:
         node-version: [12.16.x]
- 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -27,21 +25,34 @@ jobs:
       - name: yarn install
         run: yarn
         working-directory: "frontend/"
-        
-      - name: Build
+
+      - name: yarn build
         run: yarn build
         working-directory: "frontend/"
-        
-      - name: Deploy to Server(Naver2)
-        uses: easingthemes/ssh-deploy@v2.0.7
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.HACKDAY_SERVER2_SSH }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "frontend/build"
-          REMOTE_HOST: "27.96.130.172"
-          REMOTE_USER: "root"
-          REMOTE_PORT: "22"
-          TARGET: "/root/test/"
+          CI: ""
 
-      - name: LOVE HACKDAY 
-        run: "done"
+      - name: Deploy to Server(Naver2)
+        uses: appleboy/scp-action@master
+        with:
+          host: "27.96.130.172"
+          port: "22"
+          username: "root"
+          key: ${{ secrets.HACKDAY_SERVER2_SSH }}
+          source: "frontend/build"
+          target: "/root/test"
+          rm: true
+
+      # - name: Deploy to Server(Naver2)
+      #   uses: easingthemes/ssh-deploy@v2.0.7
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.HACKDAY_SERVER2_SSH }}
+      #     ARGS: "-rltgoDzvO"
+      #     SOURCE: "frontend/build"
+      #     REMOTE_HOST: "27.96.130.172"
+      #     REMOTE_USER: "root"
+      #     REMOTE_PORT: "22"
+      #     TARGET: "/root/test/"
+
+      - name: LOVE HACKDAY
+        run: echo done
