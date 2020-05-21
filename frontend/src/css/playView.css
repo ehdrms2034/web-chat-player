@@ -177,3 +177,7 @@ input {
 .arrowImg {
   width: 10px;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+}
