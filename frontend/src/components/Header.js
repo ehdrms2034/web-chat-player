@@ -8,6 +8,7 @@ import { useCookies } from "react-cookie";
 import Axios from "axios";
 import { uniqueNamesGenerator, adjectives, colors, animals } from "unique-names-generator";
 import Modal from "react-modal";
+import Upload from "./Upload";
 
 const serverUrl = "http://27.96.130.172";
 
@@ -18,7 +19,6 @@ const customConfig = {
 };
 Modal.setAppElement(document.getElementById("forModal"));
 function Header({ nickname, setNickname }) {
-  var subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   function openModal() {
     setIsOpen(true);
@@ -26,7 +26,6 @@ function Header({ nickname, setNickname }) {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
   }
 
   function closeModal() {
@@ -89,29 +88,14 @@ function Header({ nickname, setNickname }) {
           <img alt="로고" src={logo} className="logoImg" />
         </Link>
       </div>
+      <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal}>
+        <Upload />
+        <button onClick={closeModal}>close</button>
+      </Modal>
       <div className="userInfo">
+        <button onClick={openModal}>업로드하기</button>
         <img alt="유저" src={userIcon} className="userImg" />
         {/* 유저 테이블의 닉네임 값 */}
-
-        <button onClick={openModal}>Open Modal</button>
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          contentLabel="Example Modal"
-        >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-          <button onClick={closeModal}>close</button>
-          <div>I am a modal</div>
-          <form>
-            <input />
-            <button>tab navigation</button>
-            <button>stays</button>
-            <button>inside</button>
-            <button>the modal</button>
-          </form>
-        </Modal>
-
         <div className="nickName center">{nickname}님</div>
       </div>
     </div>
