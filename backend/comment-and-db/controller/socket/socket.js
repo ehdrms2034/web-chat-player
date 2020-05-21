@@ -13,12 +13,11 @@ module.exports = (server) => {
             socket.join(video);
         });
 
-        socket.on('newComment', (data, callback) => {
+        socket.on('newComment', (data) => {
             console.log('socket newComment!');
             console.log(data);
 
             io.to(data.video).emit('newMessage', { id: data.id, text: data.message, createdAt: data.createdAt, timeline: data.timeline });
-            callback();
         });
 
         socket.on('disconnect', () => {
