@@ -1,14 +1,12 @@
-
-name: Front-Build-To-Server2
+name: Front-Build-To-NaverServer2
 
 on:
   push:
-
-    branches: [feature/front]
+    branches: [master]
 
 jobs:
   deploy:
-    name: Build, Deploy to S3 bucket
+    name: Build & Deploy(Copy to Server)
     runs-on: [ubuntu-latest]
     strategy:
       matrix:
@@ -42,17 +40,6 @@ jobs:
           source: "frontend/build"
           target: "/root/test"
           rm: true
-
-      # - name: Deploy to Server(Naver2)
-      #   uses: easingthemes/ssh-deploy@v2.0.7
-      #   env:
-      #     SSH_PRIVATE_KEY: ${{ secrets.HACKDAY_SERVER2_SSH }}
-      #     ARGS: "-rltgoDzvO"
-      #     SOURCE: "frontend/build"
-      #     REMOTE_HOST: "27.96.130.172"
-      #     REMOTE_USER: "root"
-      #     REMOTE_PORT: "22"
-      #     TARGET: "/root/test/"
 
       - name: LOVE HACKDAY
         run: echo done
