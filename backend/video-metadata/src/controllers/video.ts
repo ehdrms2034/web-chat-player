@@ -17,3 +17,14 @@ export async function getSingleVideo(id: string): Promise<Video | null> {
     throw err;
   }
 }
+
+export async function saveSigleVideo(name: string, summary: string, posterUrl: string, videoUrl: string) {
+  try {
+    const newVideo = new VideoCollection({
+      name,summary,posterUrl,videoUrl
+    });
+    return await newVideo.save();
+  }catch (err){
+    throw err;
+  }
+}
