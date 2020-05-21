@@ -5,6 +5,7 @@ import Comment from "./Comment";
 import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
+import TmpCookie from "react-cookies";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 999999;
 
@@ -30,10 +31,11 @@ const _getComments = async (videoId, startTime = 0, until = COMMENT_SLICE_LENGTH
 };
 
 //댓글 REST API에 저장
+
 const _createComments = async (videoId, message, timeline, nickname) => {
   const URL = `${COMMENT_BASE_URL}comment`;
   const BODY = {
-    cookie: nickname,
+    cookie: TmpCookie.load("id"),
     video: videoId,
     message,
     timeline,
@@ -43,6 +45,7 @@ const _createComments = async (videoId, message, timeline, nickname) => {
       return res.data;
     });
     if (data.response === "error") throw data;
+    console.log(`INFO (ChatContainer.js) : DB에 댓글 추가 성공`);
     return data.data;
   } catch (error) {
     console.log(error);
@@ -62,6 +65,7 @@ const convertTime = (num) => {
 };
 
 const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
+  const [currentId] = useState(TmpCookie.load("id"));
   const [messages, setMessages] = useState([]);
   const [convertedLastPoint, setConvertedLastPoint] = useState("");
   const $input = createRef();
@@ -96,11 +100,10 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
-      //console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
+      console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
 
       //작성자명이 Comment Server의 Socket Controller는 id, DB Controller는 nickname인 문제
       //Comment.js로 통일해서 사용하기 위함
-      console.log(newMessage);
 
       const convertedMsg = {
         nickname: newMessage.id,
@@ -136,15 +139,28 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     // 공백제거 코드
     const blank_pattern = /^\s+|\s+$/g;
     if (!message || message.length === 0 || message.replace(blank_pattern, "") === "") return;
-    //console.log(`INFO (ChatContainer.js) : 새 메시지 발송 : ${message}`);
     _createComments(_videoId, message, Math.floor(_timeline * 100) / 100, nickname);
     socket.emit("newComment", {
-      id: nickname,
+      id: currentId,
       message,
       createdAt: new Date(),
       timeline: Math.floor(_timeline * 100) / 100,
       video: _videoId,
     });
+    console.log(
+      `INFO (ChatContainer.js) : 새 메시지 발송 : ${JSON.stringify(
+        {
+          id: currentId,
+          message,
+          createdAt: new Date(),
+          timeline: Math.floor(_timeline * 100) / 100,
+          video: _videoId,
+        },
+        null,
+        2
+      )}`
+    );
+
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
   };
