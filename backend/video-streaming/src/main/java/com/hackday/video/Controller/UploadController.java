@@ -34,16 +34,23 @@ public class UploadController {
     @Value("${ffmpeg.path}")
     private String ffmpegPath;
     @PostMapping(value = "/videos/upload")
-    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,
+    public Map<String, Object> upload(@RequestParam("videoname") String videoname, @RequestParam("file") MultipartFile multipartFile,@RequestParam("poster") MultipartFile posterFile,
                                       @RequestParam("desc") String desc) {
         String filename = multipartFile.getOriginalFilename();
+        System.out.println("filename:"+ filename);
         File targetFile = new File(uploadLocation+filename);
-        logger.info("actual path is: " + targetFile.getAbsolutePath());
+
+        System.out.println(filename.split("."));
+        File poster = new File(uploadLocation+videoname+"-poster");
+        logger.info("actual path of video is: " + targetFile.getAbsolutePath());
+        logger.info("actual path of poster is: " + poster.getAbsolutePath());
         try {
             //파일 가져오기
             InputStream fileStream = multipartFile.getInputStream();
+            InputStream posterStream = posterFile.getInputStream();
             FileUtils.copyInputStreamToFile(fileStream, targetFile);
-            System.out.println("filename:"+ filename);
+            FileUtils.copyInputStreamToFile(posterStream, poster);
+
             //ConvertService cs = new ConvertService();
             //ffmpeg hls 변환 후 업로드
             try {
@@ -59,12 +66,12 @@ public class UploadController {
                         .addExtraArgs("-hls_time", "10") //10초정도컷
                         .addExtraArgs("-f", "hls")
                         .done();
-                FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
-                executor.createJob(builder).run();
+
 
             } catch (Exception e) {
                 System.out.println(e);
             }
+
 
         } catch (IOException e) {
             FileUtils.deleteQuietly(targetFile);
