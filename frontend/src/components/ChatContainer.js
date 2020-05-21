@@ -67,7 +67,7 @@ const convertTime = (num) => {
   return new Date(num * 1000).toISOString().substr(11, 8);
 };
 
-const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
+const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }, ref) => {
   const [currentId] = useState(TmpCookie.load("id"));
   const [messages, setMessages] = useState([]);
   const [currentMessages, setCurrentMessage] = useState([]);
@@ -97,6 +97,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
+      console.log(comments);
     });
   }, []);
 
@@ -130,22 +131,24 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
 
   //스크롤 관련
   useEffect(() => {
+    if (isBottom) toBottom();
     $commentContainer.current.onscroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
+      console.log(scrollHeight, scrollTop, clientHeight);
       if (scrollHeight === clientHeight + scrollTop) setIsBottom(true);
       else setIsBottom(false);
     };
   }, [currentMessages.length]);
 
-  useInterval(() => {
+  useEffect(() => {
+    console.log(isBottom);
     const lists = messages
       .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
       .map((message, index) => {
         return { index, message };
       });
     setCurrentMessage(lists);
-    if (isBottom) toBottom();
-  }, 100);
+  }, [_timeline, messages]);
 
   const toBottom = () => {
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
@@ -193,9 +196,9 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
         <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
         {currentMessages.map((it, index) => (
           <Comment key={index} message={it.message} onConvert={convertTime} />
-        ))}{" "}
-      </div>{" "}
-      <Input ref={$input} sendMessage={sendMessage} />{" "}
+        ))}
+      </div>
+      <Input ref={$input} sendMessage={sendMessage} />
       <div className="floatBottom" onClick={toBottom}>
         <img className="arrowImg" src={arrow} />
       </div>
