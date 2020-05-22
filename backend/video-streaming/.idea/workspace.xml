@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b5721113-5a22-4cc8-9a18-cac124beb44a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Controller/UploadController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hackday/video/Service/UploadUtils.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1cDD67cx5qNT4gUl398xb6sLjMm" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/2020-ict-team4/backend" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.hackday.video" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="VideoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="video-streaming" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.hackday.video.VideoApplication" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5721113-5a22-4cc8-9a18-cac124beb44a" name="Default Changelist" comment="" />
+      <created>1590054091955</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1590054091955</updated>
+      <workItem from="1590054093382" duration="502000" />
+      <workItem from="1590054612677" duration="8814000" />
+      <workItem from="1590064069062" duration="613000" />
+      <workItem from="1590064720936" duration="2004000" />
+      <workItem from="1590066804566" duration="359000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="125" y="200" width="800" height="677" key="#Project_Structure" timestamp="1590064784866">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="125" y="200" width="800" height="677" key="#Project_Structure/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590064784866" />
+    <state x="458" y="162" width="1074" height="754" key="#VideoApplication" timestamp="1590064903565">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="458" y="162" width="1074" height="754" key="#VideoApplication/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590064903565" />
+    <state x="67" y="198" width="1281" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590064610118">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="67" y="198" width="1281" height="684" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590064610118" />
+    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590078337563">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="196" y="345" width="649" height="390" key="#com.intellij.fileTypes.FileTypeChooser/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590078337563" />
+    <state x="366" y="432" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1590066885557">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="366" y="432" width="308" height="216" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590066885557" />
+    <state x="440" y="466" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1590066007716">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="440" y="466" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590066007716" />
+    <state x="746" y="420" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1590066009944">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="746" y="420" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590066009944" />
+    <state x="313" y="297" width="424" height="484" key="FileChooserDialogImpl" timestamp="1590065456327">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="313" y="297" width="424" height="484" key="FileChooserDialogImpl/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590065456327" />
+    <state width="881" height="375" key="GridCell.Tab.0.bottom" timestamp="1590067050391">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.0.bottom/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050391" />
+    <state width="881" height="375" key="GridCell.Tab.0.center" timestamp="1590067050391">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.0.center/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050391" />
+    <state width="881" height="375" key="GridCell.Tab.0.left" timestamp="1590067050390">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.0.left/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050390" />
+    <state width="881" height="375" key="GridCell.Tab.0.right" timestamp="1590067050391">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.0.right/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050391" />
+    <state width="881" height="375" key="GridCell.Tab.1.bottom" timestamp="1590067050392">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.1.bottom/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050392" />
+    <state width="881" height="375" key="GridCell.Tab.1.center" timestamp="1590067050391">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.1.center/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050391" />
+    <state width="881" height="375" key="GridCell.Tab.1.left" timestamp="1590067050391">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.1.left/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050391" />
+    <state width="881" height="375" key="GridCell.Tab.1.right" timestamp="1590067050392">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="881" height="375" key="GridCell.Tab.1.right/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590067050392" />
+    <state x="482" y="174" width="1024" height="845" key="SettingsEditor" timestamp="1590065122235">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="482" y="174" width="1024" height="845" key="SettingsEditor/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590065122235" />
+    <state x="167" y="100" width="717" height="880" key="dock-window-1" timestamp="1590054648395">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="167" y="100" width="717" height="880" key="dock-window-1/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590054648395" />
+    <state x="193" y="237" width="672" height="678" key="search.everywhere.popup" timestamp="1590063988583">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="193" y="237" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1080/67.27.1853.1053@67.27.1853.1053" timestamp="1590063988583" />
+  </component>
+</project>

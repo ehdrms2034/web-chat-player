@@ -10,6 +10,7 @@ function ListView() {
   React.useEffect(() => {
     axios.get(`${METADATA_BASE_URL}/videos`).then((res) => {
       setVideos(res.data);
+      console.log(res.data);
     });
   }, []);
 
