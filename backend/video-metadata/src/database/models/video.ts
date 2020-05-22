@@ -28,6 +28,8 @@ const video = new Schema<Video>({
     type: String,
     required: true,
   },
+},{
+  versionKey : false
 });
 
 const VideoCollection = model<Video>("video", video);
