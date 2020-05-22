@@ -39,6 +39,14 @@ port : 3000
 
 Node + mongoDB 로 구성
 
+### 동영상 스트리밍 서버
+
+서버 host : 49.50.162.195 (곧 폐쇄 예정)
+
+port : 8080
+
+Spring Boot로 구성, FFmpeg으로 변환
+
 ### API 명세
 
 현재 프록시에 연결되어 있습니다.
@@ -188,5 +196,37 @@ Request Ex : /comment/comments?video={videoId}&timeline={시간(sec.ms)}&offset=
   "response": "error",
   "message": "메시지 리스트를 불러오는데 실패했습니다",
   "data": "error Message"
+}
+```
+
+
+**POST: /videos/upload**
+
+- RequestBody(multipart/form-data)
+
+```
+  videoname: "비디오 이름",
+  desc: "비디오 설명",
+  poster: poster file,
+  file: video file
+```
+
+출력
+
+- 200 - 성공시
+
+```json
+{
+    "errorCode": 10,
+    "message": "업로드 성공"
+}
+```
+
+- 200 - 실패시
+
+```json
+{
+    "errorCode": 12,
+    "message": "업로드 실패"
 }
 ```
