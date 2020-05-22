@@ -2,6 +2,24 @@
 
 웹 비디오 플레이어와 소켓을 이용한 "라이브 댓글" 비디오 플레이어
 
+![screenshot 1](https://user-images.githubusercontent.com/26613280/82647489-3d1fce00-9c51-11ea-9cea-b196af720c8f.png)
+![screenshot 2](https://user-images.githubusercontent.com/26613280/82647515-45780900-9c51-11ea-8046-2ec94291ac0f.png)
+
+## 플로우
+
+by [장정윤](https://github.com/Lai-khan)
+
+![flowchart](https://user-images.githubusercontent.com/26613280/82665048-ef658e80-9c6d-11ea-9706-3e440e88cfbb.png)
+
+## 컴포넌트 
+
+- Video upload/streaming server
+- Video metadata API server
+- Proxy Server
+- React with react-player
+- Socket server
+- MongoDB server
+
 ## 기술 스택
 
 - Spring Boot
