@@ -7,8 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useCookies } from "react-cookie";
 import Axios from "axios";
 import { uniqueNamesGenerator, adjectives, colors, animals } from "unique-names-generator";
-import Modal from "react-modal";
-import Upload from "./Upload";
 
 const serverUrl = "http://27.96.130.172";
 
@@ -17,34 +15,12 @@ const customConfig = {
   separator: " ",
   length: 2,
 };
-Modal.setAppElement(document.getElementById("forModal"));
+
 function Header({ nickname, setNickname }) {
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-  }
-  function closeModal() {
-    setIsOpen(false);
-  }
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
-  };
-
   const $Header = useRef();
   // scroll처리
   useEffect(() => {
-    window.addEventListener("scroll", function(e) {
+    window.addEventListener("scroll", function (e) {
       let offSet = window.scrollY;
       offSet === 0 ? $Header.current.classList.remove("notTop") : $Header.current.classList.add("notTop");
     });
@@ -90,21 +66,14 @@ function Header({ nickname, setNickname }) {
   };
 
   return (
-    <div className="Header" ref={$Header} id="forModal">
+    <div className="Header" ref={$Header}>
       <div className="logo">
         {/* 홈으로 */}
         <Link to="/">
           <img alt="로고" src={logo} className="logoImg" />
         </Link>
       </div>
-      <Modal style={customStyles} isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal}>
-        {/* <button onClick={closeModal}>close</button> */}
-        <Upload />
-      </Modal>
       <div className="userInfo">
-        <button className="sendButton" onClick={openModal}>
-          업로드하기
-        </button>
         <img alt="유저" src={userIcon} className="userImg" />
         {/* 유저 테이블의 닉네임 값 */}
         <div className="nickName center">{nickname}님</div>

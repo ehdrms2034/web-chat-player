@@ -36,11 +36,7 @@ function PlayView({ match, nickname }) {
     _player = player;
   };
   const onProgress = (p) => {
-    if (Math.abs(timeline - p.playedSeconds) > 1) {
-      handleLastPoint(p.playedSeconds);
-    }
     handleTime(p.playedSeconds);
-    // handleLastPoint(p.playedSeconds);
   };
   return (
     <div className="PlayView">
@@ -52,6 +48,7 @@ function PlayView({ match, nickname }) {
           playing
           onReady={onPlayerReady}
           controls={true}
+          onSeek={(e) => handleLastPoint(Number(e))}
           onProgress={onProgress}
           progressInterval={10}
           width="60vw"
