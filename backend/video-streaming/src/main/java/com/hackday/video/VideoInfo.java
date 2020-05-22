@@ -12,4 +12,5 @@ public class VideoInfo {
     String convertedVideoPath;
     String posterPath;
     String videoServerUrl;
+    String posterServerUrl;
 }

@@ -44,7 +44,7 @@ public class UploadController {
             //FFmpeg 변환
             util.convertToHls(vi.getOriginalVideoPath(), vi.getConvertedVideoPath());
             //메타 서버에 POST 요청
-            util.sendRequsetToMetaServer(videoname, desc, vi.getVideoServerUrl(), vi.getPosterPath());
+            util.sendRequsetToMetaServer(videoname, desc, vi.getVideoServerUrl(), vi.getPosterServerUrl());
         } catch (Exception e) {
             //실패시 롤백
             util.rollBack(videoFile, posterFile);

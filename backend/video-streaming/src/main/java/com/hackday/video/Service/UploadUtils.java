@@ -94,10 +94,10 @@ public class UploadUtils {
         String extension = parsedPoster[parsedPoster.length-1];
         String posterName = videoname+"-poster."+extension;
         String posterPath=uploadLocation+ posterName;
-
+        String posterServerUrl=videoUrl+ posterName;
 
         String videoServerUrl = videoUrl+videoname+".m3u8";
-        VideoInfo vi = new VideoInfo(filename, originalVideoPath, convertedVideoPath, posterPath, videoServerUrl);
+        VideoInfo vi = new VideoInfo(filename, originalVideoPath, convertedVideoPath, posterPath, videoServerUrl, posterServerUrl);
         return vi;
     }
 }
