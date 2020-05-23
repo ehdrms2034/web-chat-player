@@ -134,8 +134,9 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     if (isBottom) toBottom();
     $commentContainer.current.onscroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
-      console.log(scrollHeight, scrollTop, clientHeight);
-      if (scrollHeight === clientHeight + scrollTop) setIsBottom(true);
+      const heightAndTop = clientHeight + Math.floor(scrollTop);
+      //console.log(scrollHeight, heightAndTop, scrollTop, clientHeight);
+      if (scrollHeight == heightAndTop || scrollHeight == heightAndTop + 1) setIsBottom(true);
       else setIsBottom(false);
     };
   }, [currentMessages.length]);
