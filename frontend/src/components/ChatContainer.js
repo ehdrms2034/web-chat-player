@@ -6,11 +6,10 @@ import Input from "./Input";
 import Axios from "axios";
 import arrow from "../imgs/arrow.png";
 import TmpCookie from "react-cookies";
-import useInterval from "@use-it/interval";
 const COMMENT_BASE_URL = "http://27.96.130.172/api/comment/";
 const COMMENT_SLICE_LENGTH = 999999;
 
-const MESSAGE_ITEM_HEIGHT = 109;
+//const MESSAGE_ITEM_HEIGHT = 109;
 
 let socket;
 
@@ -68,7 +67,6 @@ const convertTime = (num) => {
 };
 
 const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
-  const [currentId] = useState(TmpCookie.load("id"));
   const [messages, setMessages] = useState([]);
   const [currentMessages, setCurrentMessage] = useState([]);
   const [convertedLastPoint, setConvertedLastPoint] = useState("");
@@ -90,14 +88,13 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   useEffect(() => {
     // 소켓은 최초 1회만 연결
     socket = io(ENDPOINT);
-    socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
+    //socket.once("connect", () => console.log(`INFO (ChatContainer.js) : 소켓 : 연결완료`));
     socket.emit("join", _videoId);
 
     // 처음(0초) 한번만 DB로부터 댓글 받아오기
     _getComments(_videoId, _timeline, COMMENT_SLICE_LENGTH).then((comments) => {
       comments.sort((a, b) => (a.timeline < b.timeline ? -1 : a.timeline === b.timeline ? 0 : 1)); // 시간 순 정렬
       setMessages(comments);
-      console.log(comments);
     });
   }, []);
 
@@ -107,7 +104,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   // 이후 소켓 한 번 호출 때마다 호출 열었다 닫았다 함. 이렇게 하는 이유는 state(messages)를 추적하지 못해서.
   useEffect(() => {
     socket.on("newMessage", (newMessage) => {
-      console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
+      //console.log(`INFO (ChatContainer.js) : 새 메시지 수신 : ${JSON.stringify(newMessage, null, 2)}`);
 
       //작성자명이 Comment Server의 Socket Controller는 id, DB Controller는 nickname인 문제
       //Comment.js로 통일해서 사용하기 위함
@@ -135,14 +132,12 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
     $commentContainer.current.onscroll = (e) => {
       const { scrollHeight, scrollTop, clientHeight } = $commentContainer.current;
       const heightAndTop = clientHeight + Math.floor(scrollTop);
-      //console.log(scrollHeight, heightAndTop, scrollTop, clientHeight);
-      if (scrollHeight == heightAndTop || scrollHeight == heightAndTop + 1) setIsBottom(true);
+      if (scrollHeight === heightAndTop || scrollHeight === heightAndTop + 1) setIsBottom(true);
       else setIsBottom(false);
     };
   }, [currentMessages.length]);
 
   useEffect(() => {
-    console.log(isBottom);
     const lists = messages
       .filter((message) => _lastPoint <= message.timeline && message.timeline <= _timeline)
       .map((message, index) => {
@@ -171,19 +166,6 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
       timeline: Math.floor(_timeline * 100) / 100,
       video: _videoId,
     });
-    console.log(
-      `INFO (ChatContainer.js) : 새 메시지 발송 : ${JSON.stringify(
-        {
-          id: nickname,
-          message,
-          createdAt: new Date(),
-          timeline: Math.floor(_timeline * 100) / 100,
-          video: _videoId,
-        },
-        null,
-        2
-      )}`
-    );
 
     $commentContainer.current.scrollTo(0, $commentContainer.current.scrollHeight);
     $input.current.focus();
@@ -195,7 +177,7 @@ const ChatContainer = ({ _videoId, _timeline, _lastPoint, nickname }) => {
   return (
     <div className="ChatContainer">
       <div ref={$commentContainer} className="commentContainer">
-        <div className="chatHeader"> {_lastPoint == 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
+        <div className="chatHeader"> {_lastPoint === 0 ? "타임라인별" : convertedLastPoint + " 이후"} 댓글 </div>
         {currentMessages.map((it, index) => (
           <Comment key={index} message={it.message} onConvert={convertTime} />
         ))}
