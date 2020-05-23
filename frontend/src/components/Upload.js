@@ -10,7 +10,7 @@ function Upload() {
   const [posterFile, changePosterFile] = React.useState("");
   const [uploadCompleted, handleUploadFlag] = React.useState(false);
   const [isLoading, handleLoading] = React.useState(false);
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch } = useForm();
 
   const videoFileChange = (e) => {
     changeVideoFile(e.target.files[0]);
@@ -36,7 +36,7 @@ function Upload() {
       const data = await Axios.post(uploadUrl, formData, config).then((res) => {
         return res.data;
       });
-      if (data.errorCode != 10) throw data;
+      if (data.errorCode !== 10) throw data;
       handleUploadFlag(true);
       handleLoading(false);
     } catch (error) {

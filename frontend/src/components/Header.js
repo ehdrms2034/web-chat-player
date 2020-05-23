@@ -84,7 +84,7 @@ function Header({ nickname, setNickname }) {
     });
     if (response.data.response === "success") {
       setNickname(response.data.data);
-      console.log(`INFO (Header.js) : 기존 쿠키 적용 --> Cookie : ${id} / Nickname : ${response.data.data}`);
+      //console.log(`INFO (Header.js) : 기존 쿠키 적용 --> Cookie : ${id} / Nickname : ${response.data.data}`);
     } else await createUser();
   };
 
